@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const catcallSchema = new mongoose.Schema({
-    type: 'Feature',
+    type: String,
     geometry: {
         type: {
             type: String,
