@@ -8,18 +8,26 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-// const url = 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
-const url = process.env.DATABASEURL;
+const url = 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
+//const url = process.env.DATABASEURL || 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
 //ModeratorCatcalls OVqZGJACRvAZuiui
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
-//made model, not tested yet
-//try to insert something using the catcall model
-//to the atlasDB, which is now linked I think
+//mongoose and heroku nog niet goed geconnect!!
+//
 
 
 app.get("/", function(req, res){
-    res.render("home");
+    //get all catcalls from database to send along with home
+    Catcall.find({}, function(err, allCatcalls){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("home", {catcalls: allCatcalls});
+        }
+    })
+
+    //res.render("home");
 });
 
 //FORM TO MAKE A NEW CATCALL
@@ -52,7 +60,7 @@ app.post("/", function(req, res){
             console.log(err);
         } else {
             //req.flash("success", "");
-            res.redirect("home");
+            res.redirect("/");
         }
     });
 })

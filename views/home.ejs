@@ -40,118 +40,127 @@
         zoom: 12
     });
 
+    var catcallString = '<%- JSON.stringify(catcalls) %>'
+    var catcalls = JSON.parse(catcallString);
     var geojson = {
-        type: 'FeatureCollection',
-        features: [{
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.891362, 52.366768]
-            },
-            properties: {
-            description: '"Wat doe je hier ga naar huis?!"',
-            date: 'geen datum',
-            context: ''
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.892320, 52.368408]
-            },
-            properties: {
-            description: '"You have the nicest ass of Amsterdam!"',
-            date: 'geen datum',
-            context: 'Ik stond voor de 3 greafjes, toen een groepje toeristen langs liepen. Één van hen keek naar mij en maakten van die lip lik bewegingen, vervolgens zei hij “You have the nicest ass of Amsterdam”. Toen begonnen ze allemaal te lachen.'
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.899601, 52.378574]
-            },
-            properties: {
-            description: '"Oh but you ain\'t got no ass"',
-            date: 'geen datum',
-            context: ''
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.898826, 52.378849]
-            },
-            properties: {
-            description: '"Hey, hey, heey! Dan niet hoer!"',
-            date: 'geen datum',
-            context: ''
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.900201, 52.376536]
-            },
-            properties: {
-            description: '"Heey lekkerding! Ik vind dat jij mij jouw nummer moet geven!"',
-            date: 'geen datum',
-            context: ''
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.893726, 52.373187]
-            },
-            properties: {
-            description: '"Kom maar meisje.."',
-            date: 'geen datum',
-            context: ''
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [5.003396, 52.351223]
-            },
-            properties: {
-            description: '"Mag ik je in jouw bil knijpen?"',
-            date: 'geen datum',
-            context: ''
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.927139, 52.362590]
-            },
-            properties: {
-            description: '"Lekker lachen hé"',
-            date: 'geen datum',
-            context: 'Ik liep richting waar mijn vriendin woont en dat is bij Eerste van Swindenstraat. Ondertussen was ik aan het appen met haar. We waren grapjes aan het maken en ik glimlachte naar mijn scherm. Er liepen twee mannen van 40/50 langs waarvan 1 die naast mij stond zei “Lekker lachen he?” Ik maakte een tjoerie en liep verder.'
-            }
-          },
-                  {
-            type: 'Feature',
-            geometry: {
-            type: 'Point',
-            coordinates: [4.900309, 52.372467]
-            },
-            properties: {
-            description: '"Ik wil seks met jou"',
-            date: 'geen datum',
-            context: ''
-            }
-          }
-        ]
+      type: 'FeatureCollection',
+      features: catcalls
     };
+
+    // var geojson = {
+    //     type: 'FeatureCollection',
+    //     features: [{
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.891362, 52.366768]
+    //         },
+    //         properties: {
+    //         description: '"Wat doe je hier ga naar huis?!"',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.892320, 52.368408]
+    //         },
+    //         properties: {
+    //         description: '"You have the nicest ass of Amsterdam!"',
+    //         date: 'geen datum',
+    //         context: 'Ik stond voor de 3 greafjes, toen een groepje toeristen langs liepen. Één van hen keek naar mij en maakten van die lip lik bewegingen, vervolgens zei hij “You have the nicest ass of Amsterdam”. Toen begonnen ze allemaal te lachen.'
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.899601, 52.378574]
+    //         },
+    //         properties: {
+    //         description: '"Oh but you ain\'t got no ass"',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.898826, 52.378849]
+    //         },
+    //         properties: {
+    //         description: '"Hey, hey, heey! Dan niet hoer!"',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.900201, 52.376536]
+    //         },
+    //         properties: {
+    //         description: '"Heey lekkerding! Ik vind dat jij mij jouw nummer moet geven!"',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.893726, 52.373187]
+    //         },
+    //         properties: {
+    //         description: '"Kom maar meisje.."',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [5.003396, 52.351223]
+    //         },
+    //         properties: {
+    //         description: '"Mag ik je in jouw bil knijpen?"',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.927139, 52.362590]
+    //         },
+    //         properties: {
+    //         description: '"Lekker lachen hé"',
+    //         date: 'geen datum',
+    //         context: 'Ik liep richting waar mijn vriendin woont en dat is bij Eerste van Swindenstraat. Ondertussen was ik aan het appen met haar. We waren grapjes aan het maken en ik glimlachte naar mijn scherm. Er liepen twee mannen van 40/50 langs waarvan 1 die naast mij stond zei “Lekker lachen he?” Ik maakte een tjoerie en liep verder.'
+    //         }
+    //       },
+    //               {
+    //         type: 'Feature',
+    //         geometry: {
+    //         type: 'Point',
+    //         coordinates: [4.900309, 52.372467]
+    //         },
+    //         properties: {
+    //         description: '"Ik wil seks met jou"',
+    //         date: 'geen datum',
+    //         context: ''
+    //         }
+    //       }
+    //     ]
+    // };
+
+
 
     geojson.features.forEach(function(catcall, i){
         catcall.properties.id = i;
@@ -172,7 +181,7 @@
             link.href = '#';
             link.className = 'title';
             link.id = prop.id; //used to be link.id = "link-" + prop.id;
-            link.innerHTML = prop.description;
+            link.innerHTML = '"' + prop.description + '"';
 
             // Add details to the individual listing
             var details = listing.appendChild(document.createElement('div'));
@@ -245,7 +254,7 @@
         var popup = new mapboxgl.Popup({ closeOnClick: false })
             .setLngLat(currentFeature.geometry.coordinates)
             .setHTML('<h3>Catcall</h3>' +
-            '<h4>' + currentFeature.properties.description + '</h4>' +
+            '<h4>"' + currentFeature.properties.description + '"</h4>' +
             '<p>' + currentFeature.properties.date + ' · ' + currentFeature.properties.context + '</p>')
             .addTo(map);
     }
