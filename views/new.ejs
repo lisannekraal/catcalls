@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@CatcallsofAmsterdam</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Input form</h1>
+    <form action="/" method="POST">
+        <div>
+            <input type="text" name="catcall[description]" placeholder="Catcall">
+        </div>
+        <div>
+            <input type="text" name="catcall[context]" placeholder="Het verhaal">
+        </div>
+        <div>
+            <input type="text" name="catcall[date]" placeholder="Wanneer">
+        </div>
+        <div>
+            <input type="text" name="catcall[coordinates]" placeholder="Coordinaten">
+        </div>
+        <div>
+            <input type="submit">
+        </div>
+    </form>
+
+</body>
+</html>
