@@ -34,7 +34,10 @@ app.post("/", function(req, res){
         type: 'Feature',
         geometry: {
             type: 'Point',
-            coordinates: req.body.coordinates
+            coordinates: [
+                Number(req.body.long),
+                Number(req.body.lat)
+            ]
         },
         properties: {
             description: req.body.description,
