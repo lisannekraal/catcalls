@@ -8,13 +8,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-const url = 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
-//const url = process.env.DATABASEURL || 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
+//const url = 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
+const url = process.env.DATABASEURL || 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
 //ModeratorCatcalls OVqZGJACRvAZuiui
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //mongoose and heroku nog niet goed geconnect!!
-//
+//moet nog wel een keer pushen voor het nog een keer proberen
+//tekst kan alleen nog worden ingevoerd als in plaats van ' dit gebruiken: \u0060
+
 
 
 app.get("/", function(req, res){
@@ -38,6 +40,7 @@ app.get("/new", function(req, res){
 //CREATE A NEW CATCALL/POST REQUEST
 app.post("/", function(req, res){
     //retrieve information from form and save as object
+
     const newCatcall = {
         type: 'Feature',
         geometry: {

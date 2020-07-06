@@ -41,6 +41,7 @@
     });
 
     var catcallString = '<%- JSON.stringify(catcalls) %>'
+    console.log(catcallString);
     var catcalls = JSON.parse(catcallString);
     var geojson = {
       type: 'FeatureCollection',
@@ -80,7 +81,7 @@
     //         coordinates: [4.899601, 52.378574]
     //         },
     //         properties: {
-    //         description: '"Oh but you ain\'t got no ass"',
+    //         description: '"Oh but you ain\'t got no ass"', Oh but you ain\u0060t got no ass
     //         date: 'geen datum',
     //         context: ''
     //         }
