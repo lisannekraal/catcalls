@@ -13,10 +13,8 @@ const url = process.env.DATABASEURL || 'mongodb+srv://ModeratorCatcalls:OVqZGJAC
 //ModeratorCatcalls OVqZGJACRvAZuiui
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
-//mongoose and heroku nog niet goed geconnect!!
-//moet nog wel een keer pushen voor het nog een keer proberen
-//tekst kan alleen nog worden ingevoerd als in plaats van ' dit gebruiken: \u0060
 
+//tekst kan alleen nog worden ingevoerd als in plaats van ' dit gebruiken: \u0060
 
 
 app.get("/", function(req, res){
@@ -25,11 +23,10 @@ app.get("/", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("home", {catcalls: allCatcalls});
+            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'"); 
+            res.render("catcalls", {catcalls: catcallsData});
         }
-    })
-
-    //res.render("home");
+    });
 });
 
 //FORM TO MAKE A NEW CATCALL
@@ -40,6 +37,11 @@ app.get("/new", function(req, res){
 //CREATE A NEW CATCALL/POST REQUEST
 app.post("/", function(req, res){
     //retrieve information from form and save as object
+    
+    let dataFeature = req.body.date;
+    if(!dataFeature){
+        dataFeature = "zonder datum";
+    }
 
     const newCatcall = {
         type: 'Feature',
@@ -52,7 +54,7 @@ app.post("/", function(req, res){
         },
         properties: {
             description: req.body.description,
-            date: req.body.date,
+            date: dataFeature,
             context: req.body.context
         }
     }

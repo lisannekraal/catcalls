@@ -15,7 +15,6 @@
           <h1>Alle Catcalls</h1>
         </div>
         <div id='listings' class='listings'>
-          <!--this is where script inserts the catcall descriptions-->
         </div>
         <p><a href="/new">Link to input form</a></p>
     </div>
@@ -40,9 +39,22 @@
         zoom: 12
     });
 
-    var catcallString = '<%- JSON.stringify(catcalls) %>'
-    console.log(catcallString);
-    var catcalls = JSON.parse(catcallString);
+    // var catcallStringOne = "<%- JSON.stringify(catcalls).replace(/'/g, "\\'") %>"
+    // var catcallString = "<%- JSON.stringify(catcalls). %>"
+    // var catcalls = JSON.parse(catcallString);
+    // var jsonCatcalls = '<%= JSON.stringify(jsonCatcalls) %>';
+    // var catcalls = JSON.parse(jsonCatcalls);
+
+    // var catcallsData = '<%- JSON.stringify(allCatcalls) %>';
+    // console.log("data ===================" + catcallsData);
+    // var catcallsDataEdit = catcallsData.replace(/'/g, "\\'");
+    // console.log("edit ===================" + catcallsDataEdit);
+    // var catcalls = JSON.parse(catcallsDataEdit);
+    // console.log("catcalls ===================" + catcalls);
+
+    var catcalls = '<%- JSON.stringify(jsonCatcalls) %>';
+    catcalls = JSON.parse(catcalls);
+
     var geojson = {
       type: 'FeatureCollection',
       features: catcalls
@@ -160,8 +172,6 @@
     //       }
     //     ]
     // };
-
-
 
     geojson.features.forEach(function(catcall, i){
         catcall.properties.id = i;

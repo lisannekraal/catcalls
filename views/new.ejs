@@ -11,15 +11,17 @@
 <body>
 
     <h1>Input form</h1>
-    <form action="/" method="POST">
+    <form name="addCatcall" action="/" onsubmit="return validateForm()" method="POST">
         <div>
-            <input type="text" name="description" placeholder="Catcall zonder quotes">
+            <!--input field for catcall, including regex to avoid using double quotes cause this will mess up the database + json flow-->
+            <input type="text" id="catcall" name="description" pattern="[^\x22]+" placeholder="Catcall"> Chalk it down: <span id="result"></span>
+            <p>Do not use these special characters: "</p>
         </div>
         <div>
             <input type="text" name="context" placeholder="Het verhaal">
         </div>
         <div>
-            <input type="text" name="date" placeholder="Wanneer">
+            <input id="datefield" type="date" name="date" min="2016-01-01" max="2016-01-01">
         </div>
         <div>
             <input type="text" name="long" placeholder="long(4.7338)">
@@ -31,6 +33,45 @@
             <input type="submit">
         </div>
     </form>
+
+    <script>
+        //change maximum date to the date of today
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1; //January is 0!
+        let yyyy = today.getFullYear();
+        if(dd<10){
+                dd='0'+dd;
+            } 
+            if(mm<10){
+                mm='0'+mm;
+            } 
+
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("datefield").setAttribute("max", today);
+
+        catcall.oninput = function() {
+            result.innerHTML = '"' + input.value + '"';
+        };
+
+        function validateForm() {
+
+            //make sure someone adds a description and it does not include characters that we do not want
+            const description = document.forms["addCatcall"]["description"].value;
+            if (description == "") {
+                alert("Vul de catcall in"); //deze later vervangen door een flash
+                return false;
+            }
+
+            //make sure someone adds a date
+
+            //make sure someone adds a coordinate
+        }
+
+
+
+
+    </script>
 
 </body>
 </html>
