@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@CatcallsofAmsterdam</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
-    <script src="https://kit.fontawesome.com/414664ddc9.js" crossorigin="anonymous"></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+
+<%- include("partials/header") %>
+
 
     <div class='sidebar'>
         <div class='heading'>
-          <h1>Alle Catcalls</h1>
+            <h4 class="sidebarHeader">Browse all catcalls <i class="far fa-arrow-alt-circle-down"></i></h1>
         </div>
         <div id='listings' class='listings'>
         </div>
@@ -35,7 +26,7 @@
     }
 
     mapboxgl.accessToken = 'pk.eyJ1IjoibGlzYW4ta3JhYWwiLCJhIjoiY2s1Mm9uaXN4MDBiczNubHM2ZXc3MWIwaSJ9.6zWdzChRs2uXgoUUWJZZPw';
-        var map = new mapboxgl.Map({
+    var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [4.908019, 52.366249],
@@ -155,16 +146,15 @@
 
         var popup = new mapboxgl.Popup({ closeOnClick: false })
             .setLngLat(currentFeature.geometry.coordinates)
-            .setHTML('<h3>Catcall</h3>' +
-            '<h4>"' + currentFeature.properties.description + '"</h4>' +
+            .setHTML('<h5>CATCALL</h5>' +
+            '<h3>"' + currentFeature.properties.description + '"</h3>' +
             '<p>' + dateDisplay + ' · ' + currentFeature.properties.context + '</p>')
             .addTo(map);
     }
 
     </script>
  
-</body>
-</html>
+<%- include("partials/footer") %>
 
 
 

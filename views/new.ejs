@@ -1,19 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@CatcallsofAmsterdam</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<%- include("partials/header") %>
 
-    <h1>Input form</h1>
+<!--still to add: which fields are required, captcha, flash-->
+
+<div class="container inputForm">
+    <h2>Meld een catcall</h2>
+    <form name="addCatcall" action="/" onsubmit="return validateForm()" method="POST">
+        <div class="form-group">
+            <!--input field for catcall, including regex to avoid using double quotes cause this will mess up the database + json flow-->
+            <label for="catcall">Catcall quote:</label>
+            <input type="text" class="form-control" id="catcall" aria-describedby="catcallHelp" name="description" pattern="[^\x22]+" placeholder="Inhoud van de catcall">
+            <small id="catcallHelp" class="form-text text-muted">Alleen de catcall quote; gebruik geen "aanhalingstekens"</small>
+        </div>
+        <div class="form-group">
+            <label for="context">Jouw verhaal:</label>
+            <input type="text" class="form-control" id="context" aria-describedby="contextHelp" name="context" pattern="[^\x22]+" placeholder="Hier kan je iets kwijt over de context rondom de catcall">
+            <small id="contextHelp" class="form-text text-muted">Niet verplicht</small>
+        </div>
+        <div class="form-group">
+            <label for="datefield">Datum van catcall:</label>
+            <input type="date" class="form-control" id="datefield" name="date" min="2016-01-01" max="2016-01-01">
+        </div>
+        <div class="form-group">
+            <label for="mapResult">Locatie:</label>
+            <div class="container containerFormMap">
+                <div id="inputMap"></div>
+            </div>
+            <input type="text" class="form-control" id="long" name="long" value="" placeholder="long">
+            <input type="text" class="form-control" id="lat" name="lat" value="" aria-describedby="mapHelp" placeholder="lat">
+            <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen</small>
+        </div>
+        <!--add captcha-->
+        <button type="submit" class="btn btn-dark">Verstuur</button>
+      </form>
+</div>
+
+    <!-- <h1>Input form</h1>
     <form name="addCatcall" action="/" onsubmit="return validateForm()" method="POST">
         <div>
-            <!--input field for catcall, including regex to avoid using double quotes cause this will mess up the database + json flow-->
             <input type="text" id="catcall" name="description" pattern="[^\x22]+" placeholder="Catcall"> Chalk it down: <span id="result"></span>
             <p>Do not use these special characters: "</p>
         </div>
@@ -32,7 +55,7 @@
         <div>
             <input type="submit">
         </div>
-    </form>
+    </form> -->
 
     <script>
         //change maximum date to the date of today
@@ -50,28 +73,64 @@
         today = yyyy+'-'+mm+'-'+dd;
         document.getElementById("datefield").setAttribute("max", today);
 
-        catcall.oninput = function() {
-            result.innerHTML = '"' + input.value + '"';
-        };
+        // catcall.oninput = function() {
+        //     result.innerHTML = '"' + input.value + '"';
+        // };
 
         function validateForm() {
-
             //make sure someone adds a description and it does not include characters that we do not want
             const description = document.forms["addCatcall"]["description"].value;
             if (description == "") {
                 alert("Vul de catcall in"); //deze later vervangen door een flash
                 return false;
             }
-
             //make sure someone adds a date
-
             //make sure someone adds a coordinate
         }
 
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGlzYW4ta3JhYWwiLCJhIjoiY2s1Mm9uaXN4MDBiczNubHM2ZXc3MWIwaSJ9.6zWdzChRs2uXgoUUWJZZPw';
+        
+        var map = new mapboxgl.Map({
+            container: 'inputMap',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [4.908019, 52.366249],
+            zoom: 12
+        });
+        // map.addControl(new mapboxgl.NavigationControl());
+
+        map.on("click", function(e){
+            const lngCatcall = e.lngLat.lng;
+            const latCatcall = e.lngLat.lat;
+            var geojson = {
+                type: "FeatureCollection",
+                features: [{
+                    type:"Feature",
+                    geometry: { type: "Point", coordinates: [ lngCatcall, latCatcall ]}
+                }]
+            };
+            map.addSource("pins", {
+                "type": "geojson",
+                "data": geojson
+            });
+            map.addLayer({
+                id: "pinsLayer",
+                type: "circle",
+                source: "pins", 
+                paint: {
+                    "circle-color": "red",
+                    "circle-radius": 5 
+                }
+            });
+            const mapLong = document.querySelector("#long");
+            mapLong.setAttribute("value", lngCatcall);
+            const mapLat = document.querySelector("#lat");
+            mapLat.setAttribute("value", latCatcall);
+            console.log(mapLat);
+            console.log(mapLong);
+        });
 
 
 
     </script>
 
-</body>
-</html>
+<%- include("partials/footer") %>

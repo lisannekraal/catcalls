@@ -16,6 +16,14 @@ mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //tekst kan alleen nog worden ingevoerd als in plaats van ' dit gebruiken: \u0060
 
+app.use(function(req, res, next){
+    //currentUser added to every single template
+    res.locals.currentUser = req.user;
+    //if there is anything in the flash, we access it through these:
+    // res.locals.error = req.flash("error");
+    // res.locals.success = req.flash("success");
+    next();
+});
 
 app.get("/", function(req, res){
     //get all catcalls from database to send along with home
@@ -37,7 +45,7 @@ app.get("/new", function(req, res){
 //CREATE A NEW CATCALL/POST REQUEST
 app.post("/", function(req, res){
     //retrieve information from form and save as object
-    
+
     let dataFeature = req.body.date;
     if(!dataFeature){
         dataFeature = "zonder datum";

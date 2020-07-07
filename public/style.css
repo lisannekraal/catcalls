@@ -1,32 +1,31 @@
 body {
-color: #404040;
-font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
-margin: 0;
-padding: 0;
--webkit-font-smoothing: antialiased;
+    color: #404040;
+    font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
 }
 
 * {
--webkit-box-sizing: border-box;
--moz-box-sizing: border-box;
-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-h1 {
-font-size: 22px;
-margin: 0;
-font-weight: 400;
-line-height: 20px;
-padding: 20px 2px;
+.sidebarHeader {
+    margin: 0;
+    font-weight: 300;
+    line-height: 20px;
+    padding: 20px 2px;
 }
 
 a {
-color: #404040;
-text-decoration: none;
+    color: #404040;
+    text-decoration: none;
 }
 
 a:hover {
-color: #101010;
+    color: #101010;
 }
 
 #map-overlay-button {
@@ -37,64 +36,91 @@ color: #101010;
     z-index: 1;
 }
 
-.sidebar {
-position: absolute;
-width: 33.3333%;
-height: 100%;
-top: 0;
-left: 0;
-overflow: hidden;
-border-right: 1px solid rgba(0, 0, 0, 0.25);
+#result {
+    font-weight: 700;
 }
 
-.pad2 {
-padding: 20px;
+.sidebar {
+    position: absolute;
+    width: 33.3333%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+    padding-top:50px;
 }
+
+/* .pad2 { this does not do anything? remove this class from map?
+padding: 20px;
+} */
 
 .map {
-position: absolute;
-left: 33.3333%;
-width: 66.6666%;
-top: 0;
-bottom: 0;
+    position: absolute;
+    left: 33.3333%;
+    width: 66.6666%;
+    top: 50px;
+    bottom: 0;
 }
 
 .heading {
-background: #fff;
-border-bottom: 1px solid #eee;
-height: 60px;
-line-height: 60px;
-padding: 0 10px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 10px;
 }
 
 .listings {
-height: 100%;
-overflow: auto;
-padding-bottom: 60px;
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 60px;
 }
 
 .listings .item {
-display: block;
-border-bottom: 1px solid #eee;
-padding: 10px;
-text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    text-decoration: none;
 }
 
-.listings .item:last-child { border-bottom: none; }
+.listings .item:last-child { 
+    border-bottom: none; 
+}
 
 .listings .item .title {
-display: block;
-color: #fc3661;
-font-weight: 700;
+    display: block;
+    color: #fc3661;
+    font-weight: 400;
 }
 
 .listings .item .title small { font-weight: 400; }
 
 .listings .item.active .title,
-.listings .item .title:hover { color: #455ead; }
+.listings .item .title:hover { 
+    /* background-color: #455ead; */
+    /* color: white;  */    
+    font-weight: 700;
+    text-decoration: none;
+}
 
 .listings .item.active {
-background-color: #f8f8f8;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.inputForm {
+    margin-top: 100px;
+    max-width: 500px;
+}
+
+.containerFormMap {
+    height: 200px;
+    max-width: 600px;
+    padding: 0;
+}
+
+#inputMap {
+    height: 200px;
 }
 
 ::-webkit-scrollbar {
@@ -113,7 +139,9 @@ background: #fc3661;
 border-radius: 0;
 }
 
-.clearfix { display: block; }
+.clearfix { 
+    display: block; 
+}
 
 .clearfix::after {
 content: '.';
@@ -122,65 +150,66 @@ height: 0;
 clear: both;
 visibility: hidden;
 }
+
 /* Marker tweaks */
 .mapboxgl-popup-close-button {
-display: none;
+    display: none;
 }
 
 .mapboxgl-popup-content {
-font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
-padding: 0;
-width: 180px;
+    font-family: 'Source Sans Pro', sans-serif;
+    padding: 0;
+    width: 180px;
 }
 
 .mapboxgl-popup-content-wrapper {
 padding: 1%;
 }
 
+.mapboxgl-popup-content h5 {
+    background: #455ead;
+    color: #fff;
+    margin: 0;
+    display: block;
+    padding: 10px;
+    border-radius: 3px 3px 0 0;
+    font-weight: 700;
+    margin-top: -15px;
+}
+
 .mapboxgl-popup-content h3 {
-background: #455ead;
-color: #fff;
-margin: 0;
-display: block;
-padding: 10px;
-border-radius: 3px 3px 0 0;
-font-weight: 700;
-margin-top: -15px;
+    margin: 0;
+    display: block;
+    padding: 10px;
+    font-weight: 300;
 }
 
-.mapboxgl-popup-content h4 {
-margin: 0;
-display: block;
-padding: 10px;
-font-weight: 400;
-}
-
-.mapboxgl-popup-content div {
-padding: 10px;
+.mapboxgl-popup-content p {
+    padding: 10px;
 }
 
 .mapboxgl-popup {
-padding-bottom: 40px;
+    padding-bottom: 40px;
 }
 
-.mapboxgl-container .leaflet-marker-icon {
+/* .mapboxgl-container .leaflet-marker-icon { //weet niet meer waar dit voor was?
 cursor: pointer;
-}
+} */
 
-.mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
-margin-top: 15px;
-}
+/* .mapboxgl-popup-anchor-top > .mapboxgl-popup-content { /*weet ook niet meer waar dit voor was*/
+    margin-top: 15px;
+} */
 
-.mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
-border-bottom-color: #455ead;
+.mapboxgl-popup-anchor-top > .mapboxgl-popup-tip { /*als ik deze weg haal gaan de markers weg*/
+    border-bottom-color: #455ead;
 }
 
 .marker {
-border: none;
-cursor: pointer;
-height: 34px;
-width: 20px;
-background-image: url(pin.png);
-background-color: rgba(0, 0, 0, 0);
-background-size: cover;
+    border: none;
+    cursor: pointer;
+    height: 34px;
+    width: 20px;
+    background-image: url(pin.png);
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
 }
