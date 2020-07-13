@@ -2,55 +2,94 @@
 
 <div class="container pagesOtherThanMap">
     <h2>Hello moderator, zie hier de lijst van nieuwe catcalls</h2>
-    <div id="newCatcallList">
-        <!--this is where we load all current unverified catcalls-->
+    <div class="container mt-5" id="newCatcallList">
+        <!--loop over catcalls and check which are not verified yet-->
+        <% catcalls.forEach(function(catcall){ if(!catcall.properties.verified){ %>
+            <div>
+                <h4>"<%= catcall.properties.description %>"</h4>
+                <div class="col">
+                    <div class="row float-right"><%= catcall.properties.date %></div><br>
+                    <% if(catcall.properties.context){ %>
+                        <p>Context: <%= catcall.properties.context %></p>
+                    <% } %>
+                    <p>Coordinates: <%= catcall.geometry.coordinates %></p>
+                    <a class="btn btn-success moderatorButton">Voeg toe</a>
+                    <a class="btn btn-warning moderatorButton">Edit</a>
+                    <form id="delete-form" action="/<%= catcall._id %>?_method=DELETE" method="POST">
+                        <input type="submit" class="btn btn btn-danger moderatorButton" value="Verwijder">
+                    </form>
+                    <hr>
+                </div>
+
+            </div>
+        <% }}) %>
     </div>
 </div>
 
 <script>
+    /////nee dit moet ook een route worden, net als delete route
+    ////is het dan een post request?
+    function verifyCatcall(e) {
+        //vind de id van de catcall die die div heeft gemaakt?
+        // Catcall.find{}, function(err, foundCatcall){
+        // if(err){
+        //     console.log(err);
+        // } else {
+        //     foundCatcall.properties.verified = true;
+        // }
+    }
+
+    const verifyButtons = document.querySelectorAll(".btn-success");
+    verifyButtons.forEach(function(button){
+        button.addEventListener('click', verifyCatcall);
+    })
+
     //load all catcall data
-    const catcallsData = '<%- catcalls %>';
-    const catcalls = JSON.parse(catcallsData);
-    var geojson = {
-      type: 'FeatureCollection',
-      features: catcalls
-    };
+    // const catcallsData = '<%- catcalls %>';
+    // const catcalls = JSON.parse(catcallsData);
+    // var geojson = {
+    //   type: 'FeatureCollection',
+    //   features: catcalls
+    // };
 
     //loop over catcall and check which are not verified yet (because they are newly added by users)
-    geojson.features.forEach(function(catcall){
-        const prop = catcall.properties;
-        if(!prop.verified){
-            console.log("this catcall is not verified yet")
-            const listings = document.getElementById('newCatcallList');
-            const listing = listings.appendChild(document.createElement('div'));
+    // geojson.features.forEach(function(catcall){
+    //     const prop = catcall.properties;
+    //     if(!prop.verified){
+    //         console.log("this catcall is not verified yet")
+    //         const listings = document.getElementById('newCatcallList');
+    //         const listing = listings.appendChild(document.createElement('div'));
 
-            //for each catcall a description, context, date, location, verified or not
-            const description = listing.appendChild(document.createElement('h4'));
-            description.innerHTML = '"' + prop.description + '"';
+    //         //for each catcall a description, context, date, location, verified or not
+    //         const description = listing.appendChild(document.createElement('h4'));
+    //         description.innerHTML = '"' + prop.description + '"';
 
-            if(prop.context){
-                console.log("there is context");
-                const context = listing.appendChild(document.createElement('p'));
-                context.innerHTML = "Context: " + prop.context;
-            }
+    //         if(prop.context){
+    //             console.log("there is context");
+    //             const context = listing.appendChild(document.createElement('p'));
+    //             context.innerHTML = "Context: " + prop.context;
+    //         }
 
-            //even uitzoeken hoe ik dat met knoppen edit comments in yelpcamp deed
-            const buttonVerify = listing.appendChild(document.createElement('button'));
-            buttonVerify.href = "#"
-            buttonVerify.className = "btn btn-success moderatorButton";
-            buttonVerify.innerHTML = "Voeg toe"
-            const buttonEdit = listing.appendChild(document.createElement('button'));
-            buttonEdit.href = "/moderator/edit";
-            buttonEdit.className = "btn btn-warning moderatorButton";
-            buttonEdit.innerHTML = "Edit";
-            const buttonReject = listing.appendChild(document.createElement('button'));
-            buttonReject.href = "#";
-            buttonReject.className = "btn btn-danger moderatorButton";
-            buttonReject.innerHTML = "Verwijder";
+    //         //even uitzoeken hoe ik dat met knoppen edit comments in yelpcamp deed
+    //         const buttonVerify = listing.appendChild(document.createElement('button'));
+    //         buttonVerify.href = "#"
+    //         buttonVerify.className = "btn btn-success moderatorButton";
+    //         buttonVerify.innerHTML = "Voeg toe"
+    //         const buttonEdit = listing.appendChild(document.createElement('button'));
+    //         buttonEdit.href = "/moderator/edit";
+    //         buttonEdit.className = "btn btn-warning moderatorButton";
+    //         buttonEdit.innerHTML = "Edit";
+    //         const buttonReject = listing.appendChild(document.createElement('button'));
+    //         buttonReject.href = "#";
+    //         buttonReject.className = "btn btn-danger moderatorButton";
+    //         buttonReject.innerHTML = "Verwijder";
 
-            listing.appendChild(document.createElement('hr'));
-        }
-    });
+    //         listing.appendChild(document.createElement('hr'));
+    //     }
+    // });
+
+    //event listeners for buttons
+    //eerst kijken hoe ik dit bij yelpcamp gedaan heb
 </script>
 
 <%- include("partials/footer") %>

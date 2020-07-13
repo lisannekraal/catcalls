@@ -6,7 +6,7 @@
     <h2>Meld een catcall</h2>
     <!--enctype is only for imploading image, we can remove that once we added it to moderator's page-->
     <form name="addCatcall" action="/" onsubmit="return validateForm()" enctype="multipart/form-data" method="POST">
-        <div class="form-group">
+        <div class="form-group mt-4">
             <!--input field for catcall, including regex to avoid using double quotes cause this will mess up the database + json flow-->
             <label for="catcall">Catcall quote:</label>
             <input type="text" class="form-control" id="catcall" aria-describedby="catcallHelp" name="description" pattern="[^\x22]+" placeholder="Inhoud van de catcall">

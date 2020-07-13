@@ -4,11 +4,13 @@ const express    = require("express"),
       mongoose   = require("mongoose"),
       Catcall    = require("./models/catcall"),
       multer     = require("multer"),
+      methodOverride = require("method-override"),
       multerfs   = require("multer-gridfs-storage");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 
 //const url = 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
 const url = process.env.DATABASEURL || 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
@@ -33,7 +35,17 @@ app.use(function(req, res, next){
 var upload = multer({dest:'./uploads'});
 
 //ROUTES==================================================================================
+//1. for catcalls
+//INDEX     /           GET
+//NEW       /new        GET
+//CREATE    /           POST
+//SHOW      /:id        GET             Is not in use, because the map is used to show individual listings
+//EDIT      /:id/edit   GET             Verification/adding pictures done on map and page /moderatorlist + seperate edit page
+//UPDATE    /:id        PUT
+//DESTROY   /:id        DELETE
 
+
+//INDEX
 app.get("/", function(req, res){
     //get all catcalls from database to send along with home
     Catcall.find({}, function(err, allCatcalls){
@@ -46,12 +58,12 @@ app.get("/", function(req, res){
     });
 });
 
-//FORM TO MAKE A NEW CATCALL
+//NEW
 app.get("/new", function(req, res){
     res.render("new");
 });
 
-//CREATE A NEW CATCALL/POST REQUEST
+//CREATE
 app.post("/", upload.single('avatar'), function(req, res){
     //retrieve information from form and save as object
     let dataFeature = req.body.date;
@@ -79,7 +91,6 @@ app.post("/", upload.single('avatar'), function(req, res){
             // }
         }
     }
-
     //create new Catcall and save to db
     Catcall.create(newCatcall, function(err, newlyCreated){
         if(err){
@@ -91,20 +102,47 @@ app.post("/", upload.single('avatar'), function(req, res){
     });
 });
 
+app.get("/:id/edit", function(req, res){
+    //this is where the edit form goes that moderators can use to work on the text
+});
+
+//place where EDIT also takes place
 app.get("/moderatorlist", function(req, res){
     //ik had hier eventueel al de filter kunnen doen met verified or not --> dat gaat het laden misschien sneller?
     Catcall.find({}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
-            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'"); 
-            res.render("moderatorlist", {catcalls: catcallsData});
+            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
+            const catcalls = JSON.parse(catcallsData);
+            res.render("moderatorlist", {catcalls: catcalls});
         }
     });
 });
 
-app.get("/moderator/edit", function(req, res){
-    res.render("moderatoredit");
+//UPDATE
+app.put("/:id", function(req, res){
+    //this is where the update route goed for updating verification process and adding pictures
+});
+
+//DESTROY
+app.delete("/:id", function(req, res){
+    console.log("we reached the callback");
+    Catcall.findById(req.params.id, function(err, foundCatcall){
+        console.log(foundCatcall);
+        if(err){
+            console.log(err);
+        } else {
+            foundCatcall.remove(function(err){
+                if(err){
+                    console.log(err);
+                    res.redirect("/moderatorlist");
+                } else {
+                    res.redirect("/moderatorlist");
+                }
+            });
+        }
+    });
 });
 
 app.listen(process.env.PORT || 3000, function() {
