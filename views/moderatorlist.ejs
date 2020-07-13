@@ -1,0 +1,61 @@
+<%- include("partials/header") %>
+
+<div class="container pagesOtherThanMap">
+    <h2>Hello moderator, zie hier de lijst van nieuwe catcalls</h2>
+    <div id="newCatcallList">
+        <!--this is where we load all current unverified catcalls-->
+    </div>
+</div>
+
+<script>
+    //load all catcall data
+    const catcallsData = '<%- catcalls %>';
+    const catcalls = JSON.parse(catcallsData);
+    var geojson = {
+      type: 'FeatureCollection',
+      features: catcalls
+    };
+
+    //loop over catcall and check which are not verified yet (because they are newly added by users)
+    geojson.features.forEach(function(catcall){
+        const prop = catcall.properties;
+        if(!prop.verified){
+            console.log("this catcall is not verified yet")
+            const listings = document.getElementById('newCatcallList');
+            const listing = listings.appendChild(document.createElement('div'));
+
+            //for each catcall a description, context, date, location, verified or not
+            const description = listing.appendChild(document.createElement('h4'));
+            description.innerHTML = '"' + prop.description + '"';
+
+            if(prop.context){
+                console.log("there is context");
+                const context = listing.appendChild(document.createElement('p'));
+                context.innerHTML = "Context: " + prop.context;
+            }
+
+            //even uitzoeken hoe ik dat met knoppen edit comments in yelpcamp deed
+            const buttonVerify = listing.appendChild(document.createElement('button'));
+            buttonVerify.href = "#"
+            buttonVerify.className = "btn btn-success moderatorButton";
+            buttonVerify.innerHTML = "Voeg toe"
+            const buttonEdit = listing.appendChild(document.createElement('button'));
+            buttonEdit.href = "/moderator/edit";
+            buttonEdit.className = "btn btn-warning moderatorButton";
+            buttonEdit.innerHTML = "Edit";
+            const buttonReject = listing.appendChild(document.createElement('button'));
+            buttonReject.href = "#";
+            buttonReject.className = "btn btn-danger moderatorButton";
+            buttonReject.innerHTML = "Verwijder";
+
+            listing.appendChild(document.createElement('hr'));
+        }
+    });
+</script>
+
+<%- include("partials/footer") %>
+
+
+
+
+

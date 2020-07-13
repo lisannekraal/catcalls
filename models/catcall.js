@@ -16,7 +16,15 @@ const catcallSchema = new mongoose.Schema({
     properties: {
         description: String,
         date: String,
-        context: String
+        context: String,
+        verified: {
+            type: Boolean,
+            default: false
+        },
+        img: { 
+            data: Buffer, 
+            contentType: String 
+        }
     }
 });
 

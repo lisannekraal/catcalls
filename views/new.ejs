@@ -2,9 +2,10 @@
 
 <!--still to add: which fields are required, captcha, flash-->
 
-<div class="container inputForm">
+<div class="container pagesOtherThanMap">
     <h2>Meld een catcall</h2>
-    <form name="addCatcall" action="/" onsubmit="return validateForm()" method="POST">
+    <!--enctype is only for imploading image, we can remove that once we added it to moderator's page-->
+    <form name="addCatcall" action="/" onsubmit="return validateForm()" enctype="multipart/form-data" method="POST">
         <div class="form-group">
             <!--input field for catcall, including regex to avoid using double quotes cause this will mess up the database + json flow-->
             <label for="catcall">Catcall quote:</label>
@@ -29,33 +30,11 @@
             <input type="text" class="form-control" id="lat" name="lat" value="" aria-describedby="mapHelp" placeholder="lat">
             <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen</small>
         </div>
+
         <!--add captcha-->
         <button type="submit" class="btn btn-dark">Verstuur</button>
       </form>
 </div>
-
-    <!-- <h1>Input form</h1>
-    <form name="addCatcall" action="/" onsubmit="return validateForm()" method="POST">
-        <div>
-            <input type="text" id="catcall" name="description" pattern="[^\x22]+" placeholder="Catcall"> Chalk it down: <span id="result"></span>
-            <p>Do not use these special characters: "</p>
-        </div>
-        <div>
-            <input type="text" name="context" placeholder="Het verhaal">
-        </div>
-        <div>
-            <input id="datefield" type="date" name="date" min="2016-01-01" max="2016-01-01">
-        </div>
-        <div>
-            <input type="text" name="long" placeholder="long(4.7338)">
-        </div>
-        <div>
-            <input type="text" name="lat" placeholder="lat(52.9363)">
-        </div>
-        <div>
-            <input type="submit">
-        </div>
-    </form> -->
 
     <script>
         //change maximum date to the date of today
@@ -73,6 +52,7 @@
         today = yyyy+'-'+mm+'-'+dd;
         document.getElementById("datefield").setAttribute("max", today);
 
+        ///////////////optioneel, een preview toevoegen:
         // catcall.oninput = function() {
         //     result.innerHTML = '"' + input.value + '"';
         // };
@@ -84,8 +64,8 @@
                 alert("Vul de catcall in"); //deze later vervangen door een flash
                 return false;
             }
-            //make sure someone adds a date
-            //make sure someone adds a coordinate
+            //make sure someone adds a date?
+            //make sure someone adds a coordinate?
         }
 
         mapboxgl.accessToken = 'pk.eyJ1IjoibGlzYW4ta3JhYWwiLCJhIjoiY2s1Mm9uaXN4MDBiczNubHM2ZXc3MWIwaSJ9.6zWdzChRs2uXgoUUWJZZPw';

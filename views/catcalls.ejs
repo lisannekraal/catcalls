@@ -4,7 +4,7 @@
 
     <div class='sidebar'>
         <div class='heading'>
-            <h4 class="sidebarHeader">Browse all catcalls <i class="far fa-arrow-alt-circle-down"></i></h1>
+            <h4 class="sidebarHeader">Browse all catcalls <i class="far fa-arrow-alt-circle-down"></i></h4> 
         </div>
         <div id='listings' class='listings'>
         </div>
@@ -65,7 +65,27 @@
             link.id = prop.id; //used to be link.id = "link-" + prop.id;
             link.innerHTML = '"' + prop.description + '"';
 
-            // Add details to the individual listing
+            //////////////////////////onderstaande allemaal geprobeerd maar kan misschien wel weg?
+
+            // const mongoDBdata = prop.img.data;
+            // var canvas = document.createElement("canvas");
+            // var ctx = canvas.getContext("2d");
+            // var data = ctx.putImageData(mongoDBdata,0,0);
+
+            // var image = new Image();
+            // image.id = "rendered-picture"
+            // image.src = canvas.toDataURL();
+            // console.log(image);
+            // listing.appendChild(image);
+
+            //const image = listing.appendChild(document.createElement('img'));
+            //image.width = "20";
+            //image.height = "20";
+            //image.src = prop.img.data;
+
+            ///////////////////////
+
+            // Add details to the individual listing --> not needed because we show this in the popup
             // var details = listing.appendChild(document.createElement('div'));
             // details.innerHTML = prop.date;
             // if (prop.context) {

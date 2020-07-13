@@ -36,6 +36,10 @@ a:hover {
     z-index: 1;
 }
 
+.moderatorButton {
+    margin: 3px;
+}
+
 #result {
     font-weight: 700;
 }
@@ -108,7 +112,7 @@ padding: 20px;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.inputForm {
+.pagesOtherThanMap {
     margin-top: 100px;
     max-width: 500px;
 }
