@@ -1,0 +1,36 @@
+<%- include("partials/header") %>
+
+<!--still to add: which fields are required, flash-->
+
+<div class="container pagesOtherThanMap">
+    <h2>Edit catcall</h2>
+    <form name="editCatcall" action="/<%= catcall._id %>?_method=PUT" onsubmit="return validateForm()" method="POST">
+        <div class="form-group mt-4">
+            <label for="catcall">Catcall quote:</label>
+            <input type="text" class="form-control" id="catcall" name="description" pattern="[^\x22]+" value="<%= catcall.properties.description %>">
+        </div>
+        <% if(catcall.properties.context){ %>
+            <div class="form-group">
+                <label for="context">Context:</label>
+                <textarea pattern="[^\x22]+" class="form-control" name="context" id="context" rows="6"><%= catcall.properties.context %></textarea>
+            </div>
+        <% } %>
+        <button type="submit" class="btn btn-dark">Pas aan</button>
+        <a href="/moderatorlist" class="btn btn-light">Annuleren</a>
+      </form>
+</div>
+
+    <script>
+
+        function validateForm() {
+            //make sure someone adds a description and it does not include characters that we do not want
+            const description = document.forms["editCatcall"]["description"].value;
+            if (description == "") {
+                alert("Vul de catcall in"); //deze later vervangen door een flash
+                return false;
+            }
+        }
+
+    </script>
+
+<%- include("partials/footer") %>

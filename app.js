@@ -8,7 +8,8 @@ const express    = require("express"),
       multerfs   = require("multer-gridfs-storage");
 
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
@@ -102,8 +103,12 @@ app.post("/", upload.single('avatar'), function(req, res){
     });
 });
 
+//EDIT
 app.get("/:id/edit", function(req, res){
     //this is where the edit form goes that moderators can use to work on the text
+    Catcall.findById(req.params.id, function(err, foundCatcall){
+        res.render("edit", {catcall: foundCatcall});
+    })
 });
 
 //place where EDIT also takes place
@@ -128,18 +133,33 @@ app.patch("/verify/:id", function(req, res){
         {$set: {"properties.verified": true}}, 
         { upsert: true, new: true },
         function(err, foundCatcall){
-        if(err){
-            console.log(err);
-            res.redirect("/moderatorlist")
-        } else {
-            res.redirect("/");
+            if(err){
+                console.log(err);
+                res.redirect("/moderatorlist")
+            } else {
+                res.redirect("/");
+            }
         }
-    })
+    );
 });
 
-//UPDATE
+//UPDATE for edit form by moderator
 app.put("/:id", function(req, res){
-    //this is where the update route goed for updating verification process and adding pictures
+    const newDescription = req.body.description;
+    const newContext = req.body.context;
+    Catcall.findByIdAndUpdate(
+        req.params.id,
+        {$set: {"properties.description": newDescription, "properties.context": newContext}},
+        { upsert: true, new: true },
+        function(err, foundCatcall){
+            if(err){
+                console.log(err);
+                res.redirect("/" + req.params.id);
+            } else {
+                res.redirect("/moderatorlist");
+            }
+        }
+    );
 });
 
 //DESTROY
