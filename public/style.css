@@ -218,6 +218,6 @@ cursor: pointer;
     background-size: cover;
 }
 
-#delete-form {
+.button-form {
     display: inline;
 }

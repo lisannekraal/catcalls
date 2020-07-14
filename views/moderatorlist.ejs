@@ -13,9 +13,17 @@
                         <p>Context: <%= catcall.properties.context %></p>
                     <% } %>
                     <p>Coordinates: <%= catcall.geometry.coordinates %></p>
-                    <a class="btn btn-success moderatorButton">Voeg toe</a>
+
+                    <!--3 buttons: 1st one is a form to UPDATE the catcall from verified False to verified True-->
+                    <form class="button-form" action="/verify/<%= catcall._id %>?_method=PATCH" method="POST">
+                        <input type="submit" class="btn btn-success moderatorButton" value="Voeg toe">
+                    </form>
+
+                    <!--2nd is a link to the EDIT route to edit the text-->
                     <a class="btn btn-warning moderatorButton">Edit</a>
-                    <form id="delete-form" action="/<%= catcall._id %>?_method=DELETE" method="POST">
+
+                    <!--3rd is a form to DELETE request-->
+                    <form class="button-form" action="/<%= catcall._id %>?_method=DELETE" method="POST">
                         <input type="submit" class="btn btn btn-danger moderatorButton" value="Verwijder">
                     </form>
                     <hr>

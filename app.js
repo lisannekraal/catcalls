@@ -48,7 +48,7 @@ var upload = multer({dest:'./uploads'});
 //INDEX
 app.get("/", function(req, res){
     //get all catcalls from database to send along with home
-    Catcall.find({}, function(err, allCatcalls){
+    Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
@@ -120,6 +120,23 @@ app.get("/moderatorlist", function(req, res){
     });
 });
 
+//UPDATE for verification
+app.patch("/verify/:id", function(req, res){
+    //use $set to only update this one and not the whole properties object
+    Catcall.findByIdAndUpdate(
+        req.params.id, 
+        {$set: {"properties.verified": true}}, 
+        { upsert: true, new: true },
+        function(err, foundCatcall){
+        if(err){
+            console.log(err);
+            res.redirect("/moderatorlist")
+        } else {
+            res.redirect("/");
+        }
+    })
+});
+
 //UPDATE
 app.put("/:id", function(req, res){
     //this is where the update route goed for updating verification process and adding pictures
@@ -127,9 +144,7 @@ app.put("/:id", function(req, res){
 
 //DESTROY
 app.delete("/:id", function(req, res){
-    console.log("we reached the callback");
     Catcall.findById(req.params.id, function(err, foundCatcall){
-        console.log(foundCatcall);
         if(err){
             console.log(err);
         } else {
