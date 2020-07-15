@@ -13,15 +13,9 @@ app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-//const url = 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
-const url = process.env.DATABASEURL || 'mongodb+srv://ModeratorCatcalls:OVqZGJACRvAZuiui@cluster0.h0tqu.mongodb.net/catcall?retryWrites=true&w=majority';
-//ModeratorCatcalls OVqZGJACRvAZuiui
+const url = process.env.DATABASEURL;
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
-
-//tekst kan alleen nog worden ingevoerd als in plaats van ' dit gebruiken: \u0060
-////////is dit niet al oplgelost?
-///////checken later of ik multer wel gebruik
 //package fs gebuik ik niet meer?
 
 app.use(function(req, res, next){
@@ -82,7 +76,7 @@ app.get("/", function(req, res){
             console.log(err);
         } else {
             const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
-            const newCatcallsData = catcallsData.replace(/\\/g, "/"); 
+            const newCatcallsData = catcallsData.replace(/\\/g, "/");
             res.render("catcalls", {catcalls: newCatcallsData});
         }
     });

@@ -163,7 +163,7 @@ visibility: hidden;
 .mapboxgl-popup-content {
     font-family: 'Source Sans Pro', sans-serif;
     padding: 0;
-    width: 180px;
+    width: 250px;
 }
 
 .mapboxgl-popup-content-wrapper {

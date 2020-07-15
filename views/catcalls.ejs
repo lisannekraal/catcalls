@@ -19,6 +19,7 @@
     //global value for image
     var image = "";
     var addPictureLink = "";
+    var addEditLink = "";
 
     // This will let you use the .remove() function later on
     if (!('remove' in Element.prototype)) {
@@ -130,8 +131,11 @@
             image = "";
             //if logged in: ===========ADD authentication here
                 addPictureLink = '<a href="/' + catcall._id + '/editimage">Voeg foto toe</a>';
+                addEditLink = '<a href="/' + catcall._id + '/edit"> Edit tekst</a>'
         }else{
-            addPictureLink = "";
+            //if logged in: ==============
+                addPictureLink = '<a href="/' + catcall._id + '/editimage">Verander foto</a>';
+                addEditLink = '<a href="/' + catcall._id + '/edit"> / Edit tekst</a>'
             const imageLink = catcall.properties.img;
             image = '<a href="' + imageLink + '"><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
         }
@@ -161,7 +165,7 @@
             .setLngLat(currentFeature.geometry.coordinates)
             .setHTML('<h5>CATCALL</h5>' +
             '<h3>"' + prop.description + '"</h3>' +
-            '<p>' + addPictureLink + '<br>' + 
+            '<p>' + addPictureLink + addEditLink + '<br>' + 
             dateDisplay + ' · ' + prop.context + '</p>' + 
             image)
             .addTo(map);

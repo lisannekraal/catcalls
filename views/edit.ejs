@@ -14,6 +14,11 @@
                 <label for="context">Context:</label>
                 <textarea pattern="[^\x22]+" class="form-control" name="context" id="context" rows="6"><%= catcall.properties.context %></textarea>
             </div>
+        <% } else { %>
+            <div class="form-group">
+                <label for="context">Context:</label>
+                <textarea pattern="[^\x22]+" class="form-control" name="context" id="context" rows="6"></textarea>
+            </div>
         <% } %>
         <button type="submit" class="btn btn-dark">Pas aan</button>
         <a href="/moderatorlist" class="btn btn-light">Annuleren</a>
