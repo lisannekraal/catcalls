@@ -8,7 +8,7 @@ const express    = require("express"),
       multerfs   = require("multer-gridfs-storage");
 
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(express.static("public"));
+app.use('/uploads', express.static('uploads'));
 app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
@@ -33,7 +33,35 @@ app.use(function(req, res, next){
     next();
 });
 
-var upload = multer({dest:'./uploads'});
+
+//this will be executed each time multer is used
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb){
+        cb(null, file.originalname)
+    }
+});
+
+//setup filters for the image upload
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+        console.log("not the right file type");
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+//execute multer
+const upload = multer({
+    storage: storage, 
+    limits: {
+        fileSize: 1024 * 1024 * 2
+    },
+    fileFilter: fileFilter
+});
 
 //ROUTES==================================================================================
 //1. for catcalls
@@ -53,8 +81,9 @@ app.get("/", function(req, res){
         if(err){
             console.log(err);
         } else {
-            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'"); 
-            res.render("catcalls", {catcalls: catcallsData});
+            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
+            const newCatcallsData = catcallsData.replace(/\\/g, "/"); 
+            res.render("catcalls", {catcalls: newCatcallsData});
         }
     });
 });
@@ -111,6 +140,17 @@ app.get("/:id/edit", function(req, res){
     })
 });
 
+//EDIT route for images
+app.get("/:id/editimage", function(req, res){
+    Catcall.findById(req.params.id, function(err, foundCatcall){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("editimage", {catcall: foundCatcall});
+        }
+    });
+});
+
 //place where EDIT also takes place
 app.get("/moderatorlist", function(req, res){
     //ik had hier eventueel al de filter kunnen doen met verified or not --> dat gaat het laden misschien sneller?
@@ -136,6 +176,25 @@ app.patch("/verify/:id", function(req, res){
             if(err){
                 console.log(err);
                 res.redirect("/moderatorlist")
+            } else {
+                res.redirect("/");
+            }
+        }
+    );
+});
+
+//UPDATE for adding image using multer
+app.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
+    console.log("path add image");
+    console.log(req.file);
+    Catcall.findByIdAndUpdate(
+        req.params.id,
+        {$set: {"properties.img": req.file.path}},
+        { upsert: true, new: true },
+        function(err, foundCatcall){
+            if(err){
+                console.log(err)
+                res.redirect("/addimage/" + req.params.id);
             } else {
                 res.redirect("/");
             }

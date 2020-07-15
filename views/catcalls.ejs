@@ -164,11 +164,18 @@
             dateDisplay = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
         }
 
+        //link in innerHTML of popup. Later: add authentication. If not logged in, addPicturelink will be ""
+        const addPictureLink = '<a href="/' + currentFeature._id + '/editimage">Voeg foto toe</a>';
+        const imageLink = currentFeature.properties.img;
+        const image = '<a href="' + imageLink + '"><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
+
         var popup = new mapboxgl.Popup({ closeOnClick: false })
             .setLngLat(currentFeature.geometry.coordinates)
             .setHTML('<h5>CATCALL</h5>' +
             '<h3>"' + currentFeature.properties.description + '"</h3>' +
-            '<p>' + dateDisplay + ' · ' + currentFeature.properties.context + '</p>')
+            '<p>' + addPictureLink + '<br>' + 
+            dateDisplay + ' · ' + currentFeature.properties.context + '</p>' + 
+            image)
             .addTo(map);
     }
 

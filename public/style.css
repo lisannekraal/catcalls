@@ -221,3 +221,7 @@ cursor: pointer;
 .button-form {
     display: inline;
 }
+
+.popupImage {
+    max-height: 200px;
+}

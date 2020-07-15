@@ -22,8 +22,8 @@ const catcallSchema = new mongoose.Schema({
             default: false
         },
         img: { 
-            data: Buffer, 
-            contentType: String 
+            type: String,
+            default: "no image"
         }
     }
 });
