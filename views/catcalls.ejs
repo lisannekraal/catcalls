@@ -1,7 +1,6 @@
 
 <%- include("partials/header") %>
 
-
     <div class='sidebar'>
         <div class='heading'>
             <h4 class="sidebarHeader">Browse all catcalls <i class="far fa-arrow-alt-circle-down"></i></h4> 
@@ -16,6 +15,11 @@
     </div>
 
     <script>
+
+    //global value for image
+    var image = "";
+    var addPictureLink = "";
+
     // This will let you use the .remove() function later on
     if (!('remove' in Element.prototype)) {
         Element.prototype.remove = function() {
@@ -64,33 +68,6 @@
             link.className = 'title';
             link.id = prop.id; //used to be link.id = "link-" + prop.id;
             link.innerHTML = '"' + prop.description + '"';
-
-            //////////////////////////onderstaande allemaal geprobeerd maar kan misschien wel weg?
-
-            // const mongoDBdata = prop.img.data;
-            // var canvas = document.createElement("canvas");
-            // var ctx = canvas.getContext("2d");
-            // var data = ctx.putImageData(mongoDBdata,0,0);
-
-            // var image = new Image();
-            // image.id = "rendered-picture"
-            // image.src = canvas.toDataURL();
-            // console.log(image);
-            // listing.appendChild(image);
-
-            //const image = listing.appendChild(document.createElement('img'));
-            //image.width = "20";
-            //image.height = "20";
-            //image.src = prop.img.data;
-
-            ///////////////////////
-
-            // Add details to the individual listing --> not needed because we show this in the popup
-            // var details = listing.appendChild(document.createElement('div'));
-            // details.innerHTML = prop.date;
-            // if (prop.context) {
-            // details.innerHTML += ' · ' + prop.context;
-            // }
 
             link.addEventListener('click', function(e){
 
@@ -148,33 +125,44 @@
         });
     }
 
+    function createPopUpImage(catcall){
+        if(catcall.properties.img === "no image"){
+            image = "";
+            //if logged in: ===========ADD authentication here
+                addPictureLink = '<a href="/' + catcall._id + '/editimage">Voeg foto toe</a>';
+        }else{
+            addPictureLink = "";
+            const imageLink = catcall.properties.img;
+            image = '<a href="' + imageLink + '"><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
+        }
+    }
+
     function createPopUp(currentFeature) {
         var popUps = document.getElementsByClassName('mapboxgl-popup');
+        const prop = currentFeature.properties;
+
         // Check if there is already a popup on the map and if so, remove it
         if (popUps[0]) popUps[0].remove();
 
         //edit standard date-format into dutch version or display 'without date'
-        let date = currentFeature.properties.date;
-        console.log(date);
+        let date = prop.date;
         let dateDisplay;
         if(date == "zonder datum"){
             dateDisplay = "zonder datum";
         } else {
-            const dateArray = currentFeature.properties.date.split("-");
+            const dateArray = prop.date.split("-");
             dateDisplay = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
         }
 
-        //link in innerHTML of popup. Later: add authentication. If not logged in, addPicturelink will be ""
-        const addPictureLink = '<a href="/' + currentFeature._id + '/editimage">Voeg foto toe</a>';
-        const imageLink = currentFeature.properties.img;
-        const image = '<a href="' + imageLink + '"><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
+        //call function that if there is an image, display it, and when there is none: check if logged in to create link to upload
+        createPopUpImage(currentFeature);
 
         var popup = new mapboxgl.Popup({ closeOnClick: false })
             .setLngLat(currentFeature.geometry.coordinates)
             .setHTML('<h5>CATCALL</h5>' +
-            '<h3>"' + currentFeature.properties.description + '"</h3>' +
+            '<h3>"' + prop.description + '"</h3>' +
             '<p>' + addPictureLink + '<br>' + 
-            dateDisplay + ' · ' + currentFeature.properties.context + '</p>' + 
+            dateDisplay + ' · ' + prop.context + '</p>' + 
             image)
             .addTo(map);
     }
