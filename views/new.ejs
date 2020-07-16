@@ -25,9 +25,13 @@
             <div class="container containerFormMap">
                 <div id="inputMap"></div>
             </div>
+            <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen</small>
             <input type="text" class="form-control" id="long" name="long" value="" placeholder="long">
             <input type="text" class="form-control" id="lat" name="lat" value="" aria-describedby="mapHelp" placeholder="lat">
-            <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" class="form-check-input ml-1" required id="check">
+            <label class="form-check-label ml-4" for="check">Ik verklaar dat ik deze melding naar waarheid heb ingevuld in overeenstemming met de <a href="#">huisregels</a>. Tevens ben ik mij bewust van de <a href="">privacyverklaring</a>.</label>
         </div>
 
         <!--add captcha-->
@@ -78,6 +82,14 @@
         // map.addControl(new mapboxgl.NavigationControl());
 
         map.on("click", function(e){
+            var mapLayer = map.getLayer('pinsLayer');
+
+            if(typeof mapLayer !== 'undefined') {
+                //there is a mapLayer called pinsLayer already so we remove it when it clicks a new one
+                map.removeLayer('pinsLayer').removeSource('pins');
+            }
+
+            //and create coordinates of the click event itself
             const lngCatcall = e.lngLat.lng;
             const latCatcall = e.lngLat.lat;
             var geojson = {
@@ -100,12 +112,12 @@
                     "circle-radius": 5 
                 }
             });
+
+            //dit kunnen we misschien wel verwijderen want is niet zo interessant?
             const mapLong = document.querySelector("#long");
             mapLong.setAttribute("value", lngCatcall);
             const mapLat = document.querySelector("#lat");
             mapLat.setAttribute("value", latCatcall);
-            console.log(mapLat);
-            console.log(mapLong);
         });
 
 

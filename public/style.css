@@ -118,13 +118,13 @@ padding: 20px;
 }
 
 .containerFormMap {
-    height: 200px;
+    height: 360px;
     max-width: 600px;
     padding: 0;
 }
 
 #inputMap {
-    height: 200px;
+    height: 360px;
 }
 
 ::-webkit-scrollbar {
