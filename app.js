@@ -4,8 +4,7 @@ const express    = require("express"),
       mongoose   = require("mongoose"),
       Catcall    = require("./models/catcall"),
       multer     = require("multer"),
-      methodOverride = require("method-override"),
-      multerfs   = require("multer-gridfs-storage");
+      methodOverride = require("method-override");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/uploads', express.static('uploads'));
@@ -13,7 +12,8 @@ app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-const url = process.env.DATABASEURL;
+//in case of Heroku, use Atlas URL, in case of localhost, use local db
+const url = process.env.DATABASEURL || "mongodb://localhost/yelpcamp";
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //package fs gebuik ik niet meer?
@@ -28,7 +28,7 @@ app.use(function(req, res, next){
 });
 
 
-//this will be executed each time multer is used
+//setup for multer: set folder on server and filename of images
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
         cb(null, './uploads/');
@@ -153,8 +153,16 @@ app.get("/moderatorlist", function(req, res){
             console.log(err);
         } else {
             const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
-            const catcalls = JSON.parse(catcallsData);
-            res.render("moderatorlist", {catcalls: catcalls});
+            const newCatcallsData = catcallsData.replace(/\\/g, "/");
+            const catcalls = JSON.parse(newCatcallsData);
+            let catcallsNotVerified = [];
+
+            catcalls.forEach(function(catcall){
+                if(!catcall.properties.verified){
+                    catcallsNotVerified.push(catcall);
+                }
+            });
+            res.render("moderatorlist", {catcallsNotVerified: catcallsNotVerified});
         }
     });
 });
@@ -179,8 +187,6 @@ app.patch("/verify/:id", function(req, res){
 
 //UPDATE for adding image using multer
 app.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
-    console.log("path add image");
-    console.log(req.file);
     Catcall.findByIdAndUpdate(
         req.params.id,
         {$set: {"properties.img": req.file.path}},
