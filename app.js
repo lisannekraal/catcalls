@@ -29,7 +29,7 @@ app.use(function(req, res, next){
 });
 
 //ROUTES=====================================================================================
-//1. for catcalls
+//1. for catcalls => all in routes/catcall.js
 //INDEX     /               GET
 //NEW       /new            GET
 //CREATE    /               POST
@@ -41,6 +41,8 @@ app.use(function(req, res, next){
 //EDIT      /:id/editimage  GET             Page for uploading images
 //UPDATE    /:id            PUT
 //DESTROY   /:id            DELETE
+//
+//2. for users
 
 app.use(catcallRoutes);
 

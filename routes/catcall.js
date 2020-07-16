@@ -38,7 +38,6 @@ const upload = multer({
 
 //INDEX
 router.get("/", function(req, res){
-    //get all catcalls from database to send along with home
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);

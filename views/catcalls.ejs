@@ -119,6 +119,12 @@
         buildCatcallList(geojson);
     });
 
+    //removes popups if you click on the map
+    map.on('click', function (e) {
+        var popUps = document.getElementsByClassName('mapboxgl-popup');
+        if (popUps[0]) popUps[0].remove();
+    })
+
     function flyToLocation(currentFeature) {
         map.flyTo({
             center: currentFeature.geometry.coordinates,
