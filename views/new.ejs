@@ -2,7 +2,7 @@
 
 <!--still to add: which fields are required, captcha, flash-->
 
-<div class="container pagesOtherThanMap">
+<div class="container pagesOtherThanMap mb-4">
     <h2>Meld een catcall</h2>
     <form name="addCatcall" action="/" onsubmit="return validateForm()" method="POST">
         <div class="form-group mt-4">
@@ -26,8 +26,8 @@
                 <div id="inputMap"></div>
             </div>
             <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen</small>
-            <input type="text" class="form-control" id="long" name="long" value="" placeholder="long">
-            <input type="text" class="form-control" id="lat" name="lat" value="" aria-describedby="mapHelp" placeholder="lat">
+            <input type="text" class="inputCoordinates form-control" id="long" name="long" value="" placeholder="long">
+            <input type="text" class="inputCoordinates form-control" id="lat" name="lat" value="" aria-describedby="mapHelp" placeholder="lat">
         </div>
         <div class="form-group">
             <input type="checkbox" class="form-check-input ml-1" required id="check">

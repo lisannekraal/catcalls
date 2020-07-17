@@ -90,8 +90,8 @@
     </nav>
 
     <!--flash messages-->
+          <!--just checking the existence of error is not enough, we should check if the error contains a string in order to want to display the alert box-->
     <div class="container mt-1" id="flashBox">
-      <!--just checking the existence of error is not enough, we should check if the error contains a string in order to want to display the alert box-->
       <% if(error && error.length > 0){ %>
           <div class="alert alert-danger" role="alert">
               <%= error %>

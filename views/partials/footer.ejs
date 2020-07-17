@@ -1,2 +1,25 @@
+<script>
+
+    //if there is content in flashbox container (header), let a click somewhere on the window remove it
+    const flashBox = document.querySelector('#flashBox');
+    const flashBoxText = flashBox.innerHTML.trim();
+    if(flashBoxText.length > 0){
+        console.log(flashBoxText.length);
+
+        //set up event listener anywhere on page's body
+        document.body.addEventListener('click', function(){
+            flashBox.innerHTML = "";
+            console.log(flashBox.innerHTML);
+        });
+    }
+
+    $(document).ready(function() {
+        $('li.active').removeClass('active');
+        $('a[href="' + location.pathname + '"]').closest('li').addClass('active'); 
+    });
+
+
+</script>
+
 </body>
 </html>

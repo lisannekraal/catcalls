@@ -50,7 +50,7 @@ a:hover {
 
 .sidebar {
     position: absolute;
-    width: 33.3333%;
+    width: 25%;
     height: 100%;
     top: 0;
     left: 0;
@@ -99,11 +99,11 @@ padding: 20px;
 
 .listings .item .title {
     display: block;
-    color: #fc3661;
+    color: #000000d3;
     font-weight: 400;
 }
 
-.listings .item .title small { font-weight: 400; }
+/* .listings .item .title small { font-weight: 400; } */
 
 .listings .item.active .title,
 .listings .item .title:hover { 
@@ -118,8 +118,12 @@ padding: 20px;
 }
 
 .pagesOtherThanMap {
-    margin-top: 100px;
+    margin-top: 30px;
     max-width: 500px;
+}
+
+.inputCoordinates {
+    visibility: hidden;
 }
 
 .containerFormMap {
@@ -144,7 +148,7 @@ background: none;
 }
 
 ::-webkit-scrollbar-thumb {
-background: #fc3661;
+background: #000000;
 border-radius: 0;
 }
 
@@ -236,5 +240,9 @@ cursor: pointer;
     width: 60%;
     left: 20%;
     top: 50px;
+    z-index: 10;
+}
+
+.navbar {
     z-index: 10;
 }
