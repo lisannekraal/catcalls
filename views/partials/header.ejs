@@ -4,11 +4,21 @@
     <meta charset="utf-8" />
     <title>@CatcallsofAmsterdam</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <!--mapbox API-->
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+
+    <!--jQuery, bootstrap JS and bootstrap css in that order-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    <!--fonts and icons-->
     <script src="https://kit.fontawesome.com/414664ddc9.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+
     <link rel="stylesheet" href="/style.css">
     
 </head>
@@ -25,19 +35,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">/about</a>
+                <a class="nav-link" href="#">/over ons</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/">/kaart<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/new">/meld catcall</a>
+                <a class="nav-link" href="/catcalls">/kaart<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">/join us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">/blog</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/moderatorlist">/moderator</a>

@@ -1,0 +1,208 @@
+<div class='sidebar'>
+    <div class='heading'>
+            <!-- <a href="#" id="listButton" class="btn btn-sm btn-dark">Zie alle catcalls <i class="far fa-arrow-alt-circle-down"></i></a> -->
+        <a href="/new"><button type="button" class="btn btn-white"><i class="fas fa-plus-square"></i> Meld anoniem een nieuwe catcall</button></a>
+    </div>
+    <div id='listings' class='listings'>
+    </div>
+</div>
+
+<div id='map' class='map pad2'>Map</div>
+<div id="map-overlay-button">
+    <a href="/new"><i class="fas fa-plus-square fa-3x"></i></a>
+</div>
+
+<script>
+
+const listButton = document.getElementById("listButton");
+const mapBorder = document.getElementById("map");
+
+//global value for image
+var image = "";
+var addPictureLink = "";
+var addEditLink = "";
+
+// This will let you use the .remove() function later on
+if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function() {
+        if (this.parentNode) {
+        this.parentNode.removeChild(this);
+        }
+    };
+}
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibGlzYW4ta3JhYWwiLCJhIjoiY2s1Mm9uaXN4MDBiczNubHM2ZXc3MWIwaSJ9.6zWdzChRs2uXgoUUWJZZPw';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [4.908019, 52.366249],
+    zoom: 12
+});
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+
+const catcallsData = '<%- catcalls %>';
+const catcalls = JSON.parse(catcallsData);
+
+var geojson = {
+  type: 'FeatureCollection',
+  features: catcalls
+};
+
+geojson.features.forEach(function(catcall, i){
+    catcall.properties.id = i;
+});
+
+function buildCatcallList() {
+    mapBorder.style.left = "33.3333%";
+    mapBorder.style.width = "66.6666%";
+
+    geojson.features.forEach(function(catcall, i){
+        var prop = catcall.properties;
+
+        // Add a new listing section to the sidebar
+        var listings = document.getElementById('listings');
+        var listing = listings.appendChild(document.createElement('div'));
+        listing.id = "listing-" + prop.id;
+        listing.className = 'item';
+
+        // Add the link to the individual listing created above
+        const link = listing.appendChild(document.createElement('a'));
+        link.href = '#';
+        link.className = 'title';
+        link.id = prop.id; //used to be link.id = "link-" + prop.id;
+        link.innerHTML = '"' + prop.description + '"';
+
+        link.addEventListener('click', function(e){
+
+          var clickedListing = geojson.features[this.id];
+          flyToLocation(clickedListing);
+          createPopUp(clickedListing);
+
+          var activeItem = document.getElementsByClassName('active');
+          if (activeItem[0]) {
+            activeItem[0].classList.remove('active');
+          }
+          this.parentNode.classList.add('active');
+        });
+    });
+}
+
+function addMarkers() {
+  geojson.features.forEach(function(marker) {
+    var el = document.createElement('div');
+    el.id = "marker-" + marker.properties.id;
+    el.className = 'marker';
+    
+    new mapboxgl.Marker(el, { offset: [0, -23] })
+      .setLngLat(marker.geometry.coordinates)
+      .addTo(map);
+    
+      el.addEventListener('click', function(e){
+        flyToLocation(marker);
+        createPopUp(marker);
+
+        var activeItem = document.getElementsByClassName('active');
+        e.stopPropagation();
+        if (activeItem[0]) {
+          activeItem[0].classList.remove('active');
+        }
+        var listing = document.getElementById('listing-' + marker.properties.id);
+        listing.classList.add('active');
+      });
+  });
+}
+
+map.on('load', function (e) {
+    map.addSource('locations', {
+      type: 'geojson',
+      data: geojson
+    });
+    addMarkers();
+});
+
+
+
+$(window).on('load',function(){
+    if(location.pathname=="/catcalls"){
+        mapBorder.style.left = "33.3333%";
+        mapBorder.style.width = "66.6666%";
+        buildCatcallList();
+    } else {
+        $('#mapModal').modal('show');
+        //built catcall list (only once) when user clicks on button
+        listButton.addEventListener('click', buildCatcallList, {
+            once: true,
+            passive: true,
+            capture: true
+        });
+    }
+});
+
+//built catcall list (only once) when user clicks on button
+listButton.addEventListener('click', buildCatcallList, {
+    once: true,
+    passive: true,
+    capture: true
+});
+
+//removes popups if you click on the map
+map.on('click', function (e) {
+    var popUps = document.getElementsByClassName('mapboxgl-popup');
+    if (popUps[0]) popUps[0].remove();
+})
+
+function flyToLocation(currentFeature) {
+    map.flyTo({
+        center: currentFeature.geometry.coordinates,
+        zoom: 15
+    });
+}
+
+function createPopUpImage(catcall){
+    if(catcall.properties.img === "no image"){
+        image = "";
+        //if logged in: ===========ADD authentication here
+            addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-success">Voeg foto toe</a>';
+            addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-warning">Edit tekst</a>'
+    }else{
+        //if logged in: ==============
+            addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-warning">Verander foto</a>';
+            addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-warning">Edit tekst</a>'
+        const imageLink = catcall.properties.img;
+        image = '<a href="' + imageLink + '"><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
+    }
+}
+
+function createPopUp(currentFeature) {
+    var popUps = document.getElementsByClassName('mapboxgl-popup');
+    const prop = currentFeature.properties;
+
+    // Check if there is already a popup on the map and if so, remove it
+    if (popUps[0]) popUps[0].remove();
+
+    //edit standard date-format into dutch version or display 'without date'
+    let date = prop.date;
+    let dateDisplay;
+    if(date == "zonder datum"){
+        dateDisplay = "zonder datum";
+    } else {
+        const dateArray = prop.date.split("-");
+        dateDisplay = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
+    }
+
+    //call function that if there is an image, display it, and when there is none: check if logged in to create link to upload
+    createPopUpImage(currentFeature);
+
+    var popup = new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat(currentFeature.geometry.coordinates)
+        .setHTML('<h5>CATCALL</h5>' +
+        '<h3>"' + prop.description + '"</h3>' +
+        '<p>' + addPictureLink + addEditLink + '<br>' + 
+        dateDisplay + ' · ' + prop.context + '</p>' + 
+        image)
+        .addTo(map);
+}
+
+</script>

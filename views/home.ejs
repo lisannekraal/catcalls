@@ -1,0 +1,30 @@
+
+<%- include("partials/header") %>
+
+<!-- Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="modalLongTitle">Welkom bij Catcalls of Amsterdam</h5>
+        </div>
+        <div class="modal-body">
+            <p>
+                Hier wordt straatintimidatie visueel. Na jaren van "chalking back", nu een kaart met alle ingezonden catcalls én de mogelijkheid om zelf een melding te doen.
+            </p>
+            <p>
+                Disclaimer: deze applicatie bevat heftig, haatdragend, discriminerend en sexueel overschrijdend taalgebruik en kan een trigger zijn. Ben je jonger van 16? Overleg dan in ieder geval met jouw voogd.
+            </p>
+        </div>
+        <div class="modal-footer">
+        <button type="button" id="listButton" class="btn btn-dark" data-dismiss="modal">Zie alle catcalls</button>
+        <a href="/new"><button type="button" class="btn btn-white">Meld anoniem een nieuwe catcall</button></a>
+        
+        </div>
+    </div>
+    </div>
+</div>
+
+<%- include("partials/map") %>
+
+<%- include("partials/footer") %>

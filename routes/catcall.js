@@ -36,8 +36,20 @@ const upload = multer({
 
 //ROUTES
 
-//INDEX
+//INDEX ("/" and "/catcalls")
 router.get("/", function(req, res){
+    Catcall.find({"properties.verified": true}, function(err, allCatcalls){
+        if(err){
+            console.log(err);
+        } else {
+            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
+            const newCatcallsData = catcallsData.replace(/\\/g, "/");
+            res.render("home", {catcalls: newCatcallsData});
+        }
+    });
+});
+
+router.get("/catcalls", function(req, res){
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
@@ -88,7 +100,7 @@ router.post("/", function(req, res){
             console.log(err);
         } else {
             //req.flash("success", "");
-            res.redirect("/");
+            res.redirect("/catcalls");
         }
     });
 });
@@ -146,7 +158,7 @@ router.patch("/verify/:id", function(req, res){
                 console.log(err);
                 res.redirect("/moderatorlist")
             } else {
-                res.redirect("/");
+                res.redirect("/catcalls");
             }
         }
     );
@@ -163,7 +175,7 @@ router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
                 console.log(err)
                 res.redirect("/addimage/" + req.params.id);
             } else {
-                res.redirect("/");
+                res.redirect("/catcalls");
             }
         }
     );

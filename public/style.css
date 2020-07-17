@@ -1,3 +1,7 @@
+/*colors:
+#F6245A
+*/
+
 body {
     color: #404040;
     font-family: 'Source Sans Pro', sans-serif;
@@ -12,12 +16,12 @@ body {
     box-sizing: border-box;
 }
 
-.sidebarHeader {
+/* .sidebarHeader {
     margin: 0;
     font-weight: 300;
     line-height: 20px;
     padding: 20px 2px;
-}
+} */
 
 a {
     color: #404040;
@@ -53,6 +57,7 @@ a:hover {
     overflow: hidden;
     border-right: 1px solid rgba(0, 0, 0, 0.25);
     padding-top:50px;
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
 /* .pad2 { this does not do anything? remove this class from map?
@@ -61,8 +66,8 @@ padding: 20px;
 
 .map {
     position: absolute;
-    left: 33.3333%;
-    width: 66.6666%;
+    left: 0%;
+    width: 100%;
     top: 50px;
     bottom: 0;
 }
