@@ -99,7 +99,7 @@ router.post("/", function(req, res){
         if(err){
             console.log(err);
         } else {
-            //req.flash("success", "");
+            req.flash("success", "Bedankt voor het melden. Een moderator zal jouw catcall checken en toevoegen op de kaart.");
             res.redirect("/catcalls");
         }
     });
@@ -156,8 +156,10 @@ router.patch("/verify/:id", function(req, res){
         function(err, foundCatcall){
             if(err){
                 console.log(err);
+                req.flash("error", "Iets ging mis en het verifiëren is niet gelukt");
                 res.redirect("/moderatorlist")
             } else {
+                req.flash("success", "De catcall is geverifieerd en toegevoegd op de kaart");
                 res.redirect("/catcalls");
             }
         }
@@ -173,8 +175,10 @@ router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
         function(err, foundCatcall){
             if(err){
                 console.log(err)
+                req.flash("error", "Daar ging iets mis. De foto kan niet worden toegevoegd.");
                 res.redirect("/addimage/" + req.params.id);
             } else {
+                req.flash("success", "De foto is toegevoegd aan de catcall");
                 res.redirect("/catcalls");
             }
         }
@@ -192,8 +196,10 @@ router.put("/:id", function(req, res){
         function(err, foundCatcall){
             if(err){
                 console.log(err);
+                req.flash("error", "Daar ging iets mis. De catcall kan niet worden geüpdate.");
                 res.redirect("/" + req.params.id);
             } else {
+                req.flash("success", "De tekst van de catcall is aangepast");
                 res.redirect("/moderatorlist");
             }
         }
@@ -209,8 +215,10 @@ router.delete("/:id", function(req, res){
             foundCatcall.remove(function(err){
                 if(err){
                     console.log(err);
+                    req.flash("error", "Daar ging iets mis. Het lukt niet om de catcall te verwijderen.");
                     res.redirect("/moderatorlist");
                 } else {
+                    req.flash("success", "De melding is verwijderd en komt niet op de kaart van catcalls");
                     res.redirect("/moderatorlist");
                 }
             });

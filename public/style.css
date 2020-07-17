@@ -230,3 +230,11 @@ cursor: pointer;
 .popupImage {
     max-height: 200px;
 }
+
+#flashBox {
+    position: absolute;
+    width: 60%;
+    left: 20%;
+    top: 50px;
+    z-index: 10;
+}
