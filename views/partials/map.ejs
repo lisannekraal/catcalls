@@ -55,38 +55,53 @@ geojson.features.forEach(function(catcall, i){
 });
 
 function buildCatcallList() {
-    mapBorder.style.left = "33.3333%";
-    mapBorder.style.width = "66.6666%";
-
+    mapBorder.style.left = "25%";
+    mapBorder.style.width = "75%";
+ 
+    //fill in geojson features in newly created list
+    const allCatcalls = [];
     geojson.features.forEach(function(catcall, i){
-        var prop = catcall.properties;
-
-        // Add a new listing section to the sidebar
-        var listings = document.getElementById('listings');
-        var listing = listings.appendChild(document.createElement('div'));
-        listing.id = "listing-" + prop.id;
-        listing.className = 'item';
-
-        // Add the link to the individual listing created above
-        const link = listing.appendChild(document.createElement('a'));
-        link.href = '#';
-        link.className = 'title';
-        link.id = prop.id; //used to be link.id = "link-" + prop.id;
-        link.innerHTML = '"' + prop.description + '"';
-
-        link.addEventListener('click', function(e){
-
-          var clickedListing = geojson.features[this.id];
-          flyToLocation(clickedListing);
-          createPopUp(clickedListing);
-
-          var activeItem = document.getElementsByClassName('active');
-          if (activeItem[0]) {
-            activeItem[0].classList.remove('active');
-          }
-          this.parentNode.classList.add('active');
-        });
+        allCatcalls.push(catcall);
     });
+
+    //loop over all features in random order
+    var i = 0;
+    var random;
+    while (i < allCatcalls.length){
+        random = Math.floor(Math.random()*allCatcalls.length)
+        if (allCatcalls[random]!="selected"){
+            const catcall = allCatcalls[random];
+            var prop = catcall.properties;
+
+            // Add a new listing section to the sidebar
+            var listings = document.getElementById('listings');
+            var listing = listings.appendChild(document.createElement('div'));
+            listing.id = "listing-" + prop.id;
+            listing.className = 'item';
+
+            // Add the link to the individual listing created above
+            const link = listing.appendChild(document.createElement('a'));
+            link.href = '#';
+            link.className = 'title';
+            link.id = prop.id; //used to be link.id = "link-" + prop.id;
+            link.innerHTML = '"' + prop.description + '"';
+
+            link.addEventListener('click', function(e){
+                var clickedListing = geojson.features[this.id];
+                flyToLocation(clickedListing);
+                createPopUp(clickedListing);
+
+                var activeItem = document.getElementsByClassName('active');
+                if (activeItem[0]) {
+                activeItem[0].classList.remove('active');
+                }
+                this.parentNode.classList.add('active');
+            });
+
+            allCatcalls[random]="selected"
+            i++
+        }
+    }
 }
 
 function addMarkers() {
@@ -114,20 +129,11 @@ function addMarkers() {
   });
 }
 
-map.on('load', function (e) {
-    map.addSource('locations', {
-      type: 'geojson',
-      data: geojson
-    });
-    addMarkers();
-});
-
-
-
 $(window).on('load',function(){
     if(location.pathname=="/catcalls"){
-        mapBorder.style.left = "33.3333%";
-        mapBorder.style.width = "66.6666%";
+        mapBorder.style.left = "25%";
+        mapBorder.style.width = "75%";
+        
         buildCatcallList();
     } else {
         $('#mapModal').modal('show');
@@ -140,11 +146,12 @@ $(window).on('load',function(){
     }
 });
 
-//built catcall list (only once) when user clicks on button
-listButton.addEventListener('click', buildCatcallList, {
-    once: true,
-    passive: true,
-    capture: true
+map.on('load', function (e) {
+    map.addSource('locations', {
+      type: 'geojson',
+      data: geojson
+    });
+    addMarkers();
 });
 
 //removes popups if you click on the map
