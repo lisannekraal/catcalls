@@ -7,12 +7,12 @@
     <form name="editCatcall" action="/<%= catcall._id %>?_method=PUT" onsubmit="return validateForm()" method="POST">
         <div class="form-group mt-4">
             <label for="catcall">Catcall quote:</label>
-            <input type="text" class="form-control" id="catcall" name="description" pattern="[^\x22]+" value="<%= catcall.properties.description %>">
+            <input type="text" class="form-control" id="catcall" name="description" pattern="[^\x22]+" value="<%- decodeURI(catcall.properties.description) %>">
         </div>
         <% if(catcall.properties.context){ %>
             <div class="form-group">
                 <label for="context">Context:</label>
-                <textarea pattern="[^\x22]+" class="form-control" name="context" id="context" rows="6"><%= catcall.properties.context %></textarea>
+                <textarea pattern="[^\x22]+" class="form-control" name="context" id="context" rows="6"><%- decodeURI(catcall.properties.context) %></textarea>
             </div>
         <% } else { %>
             <div class="form-group">

@@ -7,11 +7,12 @@
         <% if(catcallsNotVerified.length > 0){ %>
             <% catcallsNotVerified.forEach(function(catcall) { %>
                 <div>
-                    <h4>"<%= catcall.properties.description %>"</h4>
+                    <h4>"<%- decodeURI(catcall.properties.description) %>"</h4>
                     <div class="col">
                         <div class="row float-right"><%= catcall.properties.date %></div><br>
                         <% if(catcall.properties.context){ %>
-                            <p>Context: <%= catcall.properties.context %></p>
+                            <p>Context: <%- decodeURI(catcall.properties.context) %></p>
+                            <p>Raw context: <%= catcall.properties.context %></p>
                         <% } %>
                         <p>Coordinates: <%= catcall.geometry.coordinates %></p>
     

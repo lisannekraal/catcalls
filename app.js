@@ -21,7 +21,7 @@ app.use(require("express-session")({
 }));
 
 //in case of Heroku, use Atlas URL, in case of localhost, use local db
-const url = process.env.DATABASEURL || "mongodb://localhost/yelpcamp";
+const url = process.env.DATABASEURL || "mongodb://localhost/catcalls";
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //package fs gebuik ik niet meer?

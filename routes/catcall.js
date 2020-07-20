@@ -42,9 +42,8 @@ router.get("/", function(req, res){
         if(err){
             console.log(err);
         } else {
-            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
-            const newCatcallsData = catcallsData.replace(/\\/g, "/");
-            res.render("home", {catcalls: newCatcallsData});
+            const catcallsData = JSON.stringify(allCatcalls);
+            res.render("home", {catcalls: catcallsData});
         }
     });
 });
@@ -54,9 +53,8 @@ router.get("/catcalls", function(req, res){
         if(err){
             console.log(err);
         } else {
-            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
-            const newCatcallsData = catcallsData.replace(/\\/g, "/");
-            res.render("catcalls", {catcalls: newCatcallsData});
+            const catcallsData = JSON.stringify(allCatcalls);
+            res.render("catcalls", {catcalls: catcallsData});
         }
     });
 });
@@ -68,13 +66,16 @@ router.get("/new", function(req, res){
 
 //CREATE
 router.post("/", function(req, res){
-    //retrieve information from form and save as object
+    //retrieve information from form
     let dataFeature = req.body.date;
     if(!dataFeature){
         dataFeature = "zonder datum";
     }
-    console.log(req.file);
 
+    const encodedContext = encodeURI(req.body.context).replace("'", "%27");
+    const encodedDescription = encodeURI(req.body.description).replace("'", "%27");
+
+    //save as js object
     const newCatcall = {
         type: 'Feature',
         geometry: {
@@ -85,13 +86,9 @@ router.post("/", function(req, res){
             ]
         },
         properties: {
-            description: req.body.description,
+            description: encodedDescription,
             date: dataFeature,
-            context: req.body.context
-                        // img: { 
-            //     data: req.file.path, 
-            //     contentType: "image/png" 
-            // }
+            context: encodedContext
         }
     }
     //create new Catcall and save to db
@@ -126,17 +123,14 @@ router.get("/:id/editimage", function(req, res){
 
 //EDIT also takes place
 router.get("/moderatorlist", function(req, res){
-    //ik had hier eventueel al de filter kunnen doen met verified or not --> dat gaat het laden misschien sneller?
     Catcall.find({}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
-            const catcallsData = JSON.stringify(allCatcalls).replace(/'/g, "\\'");
-            const newCatcallsData = catcallsData.replace(/\\/g, "/");
-            const catcalls = JSON.parse(newCatcallsData);
+            //of all catcalls, let's send only the verified ones in a list
             let catcallsNotVerified = [];
 
-            catcalls.forEach(function(catcall){
+            allCatcalls.forEach(function(catcall){
                 if(!catcall.properties.verified){
                     catcallsNotVerified.push(catcall);
                 }
@@ -187,8 +181,8 @@ router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
 
 //UPDATE for edit form by moderator
 router.put("/:id", function(req, res){
-    const newDescription = req.body.description;
-    const newContext = req.body.context;
+    const newDescription = encodeURI(req.body.description).replace("'", "%27");
+    const newContext = encodeURI(req.body.context).replace("'", "%27");
     Catcall.findByIdAndUpdate(
         req.params.id,
         {$set: {"properties.description": newDescription, "properties.context": newContext}},

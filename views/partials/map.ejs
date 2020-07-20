@@ -84,7 +84,7 @@ function buildCatcallList() {
             link.href = '#';
             link.className = 'title';
             link.id = prop.id; //used to be link.id = "link-" + prop.id;
-            link.innerHTML = '"' + prop.description + '"';
+            link.innerHTML = '"' + decodeURI(prop.description) + '"';
 
             link.addEventListener('click', function(e){
                 var clickedListing = geojson.features[this.id];
@@ -205,9 +205,9 @@ function createPopUp(currentFeature) {
     var popup = new mapboxgl.Popup({ closeOnClick: false })
         .setLngLat(currentFeature.geometry.coordinates)
         .setHTML('<h5>CATCALL</h5>' +
-        '<h3>"' + prop.description + '"</h3>' +
+        '<h3>"' + decodeURI(prop.description) + '"</h3>' +
         '<p>' + addPictureLink + addEditLink + '<br>' + 
-        dateDisplay + ' · ' + prop.context + '</p>' + 
+        dateDisplay + ' · ' + decodeURI(prop.context) + '</p>' + 
         image)
         .addTo(map);
 }
