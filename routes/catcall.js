@@ -72,8 +72,8 @@ router.post("/", function(req, res){
         dataFeature = "zonder datum";
     }
 
-    const encodedContext = encodeURI(req.body.context).replace("'", "%27");
-    const encodedDescription = encodeURI(req.body.description).replace("'", "%27");
+    const encodedContext = encodeURI(req.body.context).replace(/'/g,"%27");
+    const encodedDescription = encodeURI(req.body.description).replace(/'/g,"%27");
 
     //save as js object
     const newCatcall = {
@@ -135,7 +135,8 @@ router.get("/moderatorlist", function(req, res){
                     catcallsNotVerified.push(catcall);
                 }
             });
-            res.render("moderatorlist", {catcallsNotVerified: catcallsNotVerified});
+            const notverifiedData = JSON.stringify(catcallsNotVerified);
+            res.render("moderatorlist", {notverifiedData: notverifiedData});
         }
     });
 });
@@ -181,8 +182,8 @@ router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
 
 //UPDATE for edit form by moderator
 router.put("/:id", function(req, res){
-    const newDescription = encodeURI(req.body.description).replace("'", "%27");
-    const newContext = encodeURI(req.body.context).replace("'", "%27");
+    const newDescription = encodeURI(req.body.description).replace(/'/g,"%27");
+    const newContext = encodeURI(req.body.context).replace(/'/g,"%27");
     Catcall.findByIdAndUpdate(
         req.params.id,
         {$set: {"properties.description": newDescription, "properties.context": newContext}},

@@ -84,7 +84,7 @@ function buildCatcallList() {
             link.href = '#';
             link.className = 'title';
             link.id = prop.id; //used to be link.id = "link-" + prop.id;
-            link.innerHTML = '"' + decodeURI(prop.description) + '"';
+            link.textContent = '"' + decodeURI(prop.description) + '"';
 
             link.addEventListener('click', function(e){
                 var clickedListing = geojson.features[this.id];
@@ -202,12 +202,20 @@ function createPopUp(currentFeature) {
     //call function that if there is an image, display it, and when there is none: check if logged in to create link to upload
     createPopUpImage(currentFeature);
 
+    //next: create pop-up, its geometry and html. 
+    //But first: set text content of variables that will be inserted in this html, to avoid unwanted scripts to be parsed
+
+    const popupDescription = document.createElement('span');
+    popupDescription.textContent = decodeURI(prop.description);
+    const contextDescription = document.createElement('span');
+    contextDescription.textContent = decodeURI(prop.context);
+
     var popup = new mapboxgl.Popup({ closeOnClick: false })
         .setLngLat(currentFeature.geometry.coordinates)
         .setHTML('<h5>CATCALL</h5>' +
-        '<h3>"' + decodeURI(prop.description) + '"</h3>' +
+        '<h3>"' + popupDescription.textContent + '"</h3>' +
         '<p>' + addPictureLink + addEditLink + '<br>' + 
-        dateDisplay + ' · ' + decodeURI(prop.context) + '</p>' + 
+        dateDisplay + ' · ' + contextDescription.textContent + '</p>' + 
         image)
         .addTo(map);
 }

@@ -2,47 +2,63 @@
 
 <div class="container pagesOtherThanMap">
     <h2>Hello moderator, zie hier de lijst van nieuwe catcalls</h2>
-
-    <div class="container mt-5" id="newCatcallList">
-        <% if(catcallsNotVerified.length > 0){ %>
-            <% catcallsNotVerified.forEach(function(catcall) { %>
-                <div>
-                    <h4>"<%- decodeURI(catcall.properties.description) %>"</h4>
-                    <div class="col">
-                        <div class="row float-right"><%= catcall.properties.date %></div><br>
-                        <% if(catcall.properties.context){ %>
-                            <p>Context: <%- decodeURI(catcall.properties.context) %></p>
-                            <p>Raw context: <%= catcall.properties.context %></p>
-                        <% } %>
-                        <p>Coordinates: <%= catcall.geometry.coordinates %></p>
-    
-                        <!--3 buttons: 1st one is a form to UPDATE the catcall from verified False to verified True-->
-                        <form class="button-form" action="/verify/<%= catcall._id %>?_method=PATCH" method="POST">
-                            <input type="submit" class="btn btn-success moderatorButton" value="Voeg toe">
-                        </form>
-    
-                        <!--2nd is a link to the EDIT route to edit the text-->
-                        <a href="/<%= catcall._id %>/edit" class="btn btn-warning moderatorButton">Edit</a>
-    
-                        <!--3rd is a form to DELETE request-->
-                        <form class="button-form" action="/<%= catcall._id %>?_method=DELETE" method="POST">
-                            <input type="submit" class="btn btn btn-danger moderatorButton" value="Verwijder">
-                        </form>
-                        <hr>
-                    </div>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <p>Yes! Er zijn momenteel geen nieuwe catcalls om te verifiëren door de moderator. Kijk op de kaart om foto's toe te voegen aan geverifieerde catcalls of om te kijken welke nog gekrijt kunnen worden.</p>
-        <% } %>
+    <div id="moderatorlist">
 
     </div>
 
-    <!--element which innerHTML can be set when there are no catcalls-->
-    <div class="container" id="moderatorListDefaultMessage"></div>
+
 </div>
 
 <script>
+    const moderatorlist = document.getElementById('moderatorlist');
+    const notverifiedData = '<%- notverifiedData %>';
+    const notverifiedCatcalls = JSON.parse(notverifiedData);
+    console.log(notverifiedCatcalls);
+
+    function makeModeratorlist(input){
+        if(input.length > 0){
+            input.forEach(catcall => {
+                const catcallDiv = moderatorlist.appendChild(document.createElement('div'));
+                catcallDiv.className = 'container mt-5 p-3 moderatorlistItem';
+                const catcallDescription = catcallDiv.appendChild(document.createElement('h4'));
+                catcallDescription.textContent = '"' + decodeURI(catcall.properties.description) + '"';
+
+                const column = catcallDiv.appendChild(document.createElement('div'));
+                column.className = 'col';
+                const row = column.appendChild(document.createElement('div'));
+                row.className = 'row float-right';
+                row.textContent = catcall.properties.date;
+                const extraline = column.appendChild(document.createElement('br'));
+
+                if(catcall.properties.context){
+                    const context = column.appendChild(document.createElement('p'));
+                    context.textContent = "Context: " + decodeURI(catcall.properties.context);
+                }
+
+                const coordinates = column.appendChild(document.createElement('p'));
+                coordinates.textContent = "Coördinaten: " + catcall.geometry.coordinates;
+
+                const verifyButton = column.appendChild(document.createElement('form'));
+                verifyButton.className = 'button-form';
+                verifyButton.action = "/verify/" + catcall._id + "?_method=PATCH";
+                verifyButton.method = "POST";
+                verifyButton.innerHTML = '<input type="submit" class="btn btn-success moderatorButton" value="Voeg toe">'
+
+                const editButton = column.appendChild(document.createElement('a'));
+                editButton.className = "btn btn-warning moderatorButton";
+                editButton.href = "/" + catcall._id + "/edit";
+                editButton.textContent = 'Edit';
+
+                const deleteButton = column.appendChild(document.createElement('form'));
+                deleteButton.className = "button-form";
+                deleteButton.action = "/" + catcall._id + "?_method=DELETE";
+                deleteButton.method = "POST";
+                deleteButton.innerHTML = '<input type="submit" class="btn btn btn-danger moderatorButton" value="Verwijder">'
+            });
+        }
+    }
+
+    makeModeratorlist(notverifiedCatcalls);
 
 
 </script>
