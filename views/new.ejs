@@ -79,7 +79,7 @@
             center: [4.908019, 52.366249],
             zoom: 12
         });
-        // map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.NavigationControl());
 
         map.on("click", function(e){
             var mapLayer = map.getLayer('pinsLayer');

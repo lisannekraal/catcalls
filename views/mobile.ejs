@@ -1,0 +1,36 @@
+<%- include("partials/header") %>
+
+<!--bij mobiele versie geen modal wat er is één pagina voor catcall en home?-->
+<!--idee: voor dat je op de kaart hebt gelikt/gepanned een overlay over de kaart half transparant. addeventlistener voor aanraking buiten de overlay?-->
+
+<div class="container mt-2 d-flex justify-content-center">
+    <a href="/new"><button type="button" class="btn btn-white"><i class="fas fa-plus-square"></i> Meld anoniem een nieuwe catcall</button></a>
+</div>
+<div class="container containerMobileMap mt-2" id="containerMobileMap">
+    <div id='map' class='map'>Map</div>
+</div>
+
+<div class='sidebarMobile p-4'>
+    <div><h4>Zie alle catcalls --> </h2></div>
+    <div id='listingsMobile' class="d-flex flex-row flex-nowrap">
+    </div>
+</div>
+
+<div class="container mt-4 d-flex justify-content-center">
+    <a href="/new"><button type="button" class="btn btn-white"><i class="fas fa-plus-square"></i> Meld anoniem een nieuwe catcall</button></a>
+</div>
+
+<div class="container mt-4">
+    <h2>Over ons</h2>
+    <p>Curabitur pulvinar aliquam fringilla. Quisque quis urna libero. Nam non molestie massa. Duis euismod elit libero, eget egestas ipsum egestas eget. Etiam posuere eros sit amet ligula placerat, quis feugiat metus lobortis. Proin sit amet lobortis diam. Sed sit amet nisi aliquam, efficitur nulla ac, maximus urna.</p>
+    <p>ivamus tempor velit nec tortor pellentesque, ac efficitur leo maximus. Curabitur eget semper dui. Sed nec orci sed sem posuere <a href="#">pellentesque ac eget tellus</a>.</p>
+</div>
+
+<div class="container mt-5 mb-3 d-flex justify-content-center">
+    <a href="#"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+</div>
+
+
+<%- include("partials/map") %>
+ 
+<%- include("partials/footer") %>

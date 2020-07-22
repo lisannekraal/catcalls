@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router({mergeParams: true});
 const Catcall = require("../models/catcall");
 const multer = require("multer");
+const middleware = require("../middleware");
 
 ///MULTER
 
@@ -37,7 +38,7 @@ const upload = multer({
 //ROUTES
 
 //INDEX ("/" and "/catcalls")
-router.get("/", function(req, res){
+router.get("/", middleware.checkForMobile, function(req, res){
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
@@ -48,13 +49,24 @@ router.get("/", function(req, res){
     });
 });
 
-router.get("/catcalls", function(req, res){
+router.get("/catcalls", middleware.checkForMobile, function(req, res){
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
             const catcallsData = JSON.stringify(allCatcalls);
             res.render("catcalls", {catcalls: catcallsData});
+        }
+    });
+});
+
+router.get("/mobile", function(req, res){
+    Catcall.find({"properties.verified": true}, function(err, allCatcalls){
+        if(err){
+            console.log(err);
+        } else {
+            const catcallsData = JSON.stringify(allCatcalls);
+            res.render("mobile", {catcalls: catcallsData});
         }
     });
 });
@@ -163,9 +175,11 @@ router.patch("/verify/:id", function(req, res){
 
 //UPDATE for adding image using multer
 router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
+    //encode image link as well as it helps with parsing data while loading map
+    const encodedImageLink = encodeURI(req.file.path).replace(/'/g,"%27");
     Catcall.findByIdAndUpdate(
         req.params.id,
-        {$set: {"properties.img": req.file.path}},
+        {$set: {"properties.img": encodedImageLink}},
         { upsert: true, new: true },
         function(err, foundCatcall){
             if(err){
@@ -220,5 +234,8 @@ router.delete("/:id", function(req, res){
         }
     });
 });
+
+//MIDDLEWARE
+
 
 module.exports = router;

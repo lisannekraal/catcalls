@@ -5,10 +5,6 @@
 <div class="container pagesOtherThanMap">
     <h2>Upload catcall image</h2>
     <form name="addImage" action="/addimage/<%= catcall._id %>?_method=PATCH" method="POST" enctype="multipart/form-data">
-        <!-- <div class="form-group mt-4">
-            <label for="catcall">Catcall quote:</label>
-            <input type="text" class="form-control" id="catcall" name="description" pattern="[^\x22]+" value="<%= catcall.properties.description %>">
-        </div> -->
         <div class="form group  mt-4 mb-3">
             <input type="file" name="catcallImage" id="input-files" class="form-control-file border" aria-describedby="fileHelp" />
             <small id="fileHelp" class="form-text text-muted">Upload een kleine foto hier (max 2MB) in image/jpeg of image/png</small>
