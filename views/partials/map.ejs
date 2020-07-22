@@ -3,11 +3,13 @@
 
 const listButton = document.getElementById("listButton");
 const mapBorder = document.getElementById("map");
+const containerMap = document.getElementById('containerMobileMap');
 
 //global value for image
 var image = "";
 var addPictureLink = "";
 var addEditLink = "";
+var clickedMarker = "";
 
 // This will let you use the .remove() function later on
 if (!('remove' in Element.prototype)) {
@@ -140,6 +142,7 @@ function addMarkers() {
       .addTo(map);
     
       el.addEventListener('click', function(e){
+        clickedMarker = el;
         flyToLocation(marker);
         createPopUp(marker);
 
@@ -194,10 +197,20 @@ map.on('load', function (e) {
     addMarkers();
 });
 
-//removes popups if you click on the map
+//removes popups+foldouts if you click on the map
 map.on('click', function (e) {
     var popUps = document.getElementsByClassName('mapboxgl-popup');
+    var foldOuts = document.getElementsByClassName('foldOut');
     if (popUps[0]) popUps[0].remove();
+    if (foldOuts[0]) foldOuts[0].remove();
+    clickedMarker.style.height = "34px";
+    clickedMarker.style.width = "20px";
+    if(location.pathname=="/mobile"){
+        const foldOutDiv = document.getElementById('foldOutDiv');
+        foldOutDiv.innerHTML = "";
+        mapBorder.style.height = "360px";
+        containerMap.style.height = "360px";
+    }
 })
 
 function flyToLocation(currentFeature) {
@@ -223,41 +236,66 @@ function createPopUpImage(catcall){
 }
 
 function createPopUp(currentFeature) {
-    var popUps = document.getElementsByClassName('mapboxgl-popup');
+    console.log(this);
     const prop = currentFeature.properties;
 
-    // Check if there is already a popup on the map and if so, remove it
-    if (popUps[0]) popUps[0].remove();
-
     //edit standard date-format into dutch version or display 'without date'
-    let date = prop.date;
-    let dateDisplay;
-    if(date == "zonder datum"){
-        dateDisplay = "zonder datum";
-    } else {
-        const dateArray = prop.date.split("-");
-        dateDisplay = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
-    }
-
+        let date = prop.date;
+        let dateDisplay;
+        if(date == "zonder datum"){
+            dateDisplay = "zonder datum";
+        } else {
+            const dateArray = prop.date.split("-");
+            dateDisplay = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
+        }
     //call function that if there is an image, display it, and when there is none: check if logged in to create link to upload
     createPopUpImage(currentFeature);
 
-    //next: create pop-up, its geometry and html. 
-    //But first: set text content of variables that will be inserted in this html, to avoid unwanted scripts to be parsed
-
+    //set text content of variables that will be inserted in this html, to avoid unwanted scripts to be parsed
     const popupDescription = document.createElement('span');
     popupDescription.textContent = decodeURI(prop.description);
     const contextDescription = document.createElement('span');
     contextDescription.textContent = decodeURI(prop.context);
+    
+    if(location.pathname=="/catcalls" || location.pathname=="/"){
+        //this all happens if desktop use (POPUP ON MAP)
+        
+        var popUps = document.getElementsByClassName('mapboxgl-popup');
+        // Check if there is already a popup on the map and if so, remove it
+        if (popUps[0]) popUps[0].remove();
 
-    var popup = new mapboxgl.Popup({ closeOnClick: false })
-        .setLngLat(currentFeature.geometry.coordinates)
-        .setHTML('<h5>CATCALL</h5>' +
-        '<h3>"' + popupDescription.textContent + '"</h3>' +
-        '<p>' + addPictureLink + addEditLink + '<br>' + 
-        dateDisplay + ' · ' + contextDescription.textContent + '</p>' + 
-        image)
-        .addTo(map);
+        //next: create pop-up, its geometry and html. 
+
+        var popup = new mapboxgl.Popup({ closeOnClick: false })
+            .setLngLat(currentFeature.geometry.coordinates)
+            .setHTML('<h5>CATCALL</h5>' +
+            '<h3>"' + popupDescription.textContent + '"</h3>' +
+            '<p>' + addPictureLink + addEditLink + '<br>' + 
+            dateDisplay + ' · ' + contextDescription.textContent + '</p>' + 
+            image)
+            .addTo(map);
+    } else {
+        //this happens if on mobile: fold out div
+        mapBorder.style.height = "260px";
+        containerMap.style.height = "260px";
+
+        //check for existing foldouts
+        var foldOuts = document.getElementsByClassName('foldOut');
+        if (foldOuts[0]) foldOuts[0].remove();
+
+        const foldOutDiv = document.getElementById('foldOutDiv');
+        const newDiv = foldOutDiv.appendChild(document.createElement('div'));
+        newDiv.className = "foldOut";
+        newDiv.innerHTML = '<h3>"' + popupDescription.textContent + '"</h3>' +
+            '<p>' + addPictureLink + addEditLink + '<br>' + 
+            dateDisplay + ' · ' + contextDescription.textContent + '</p>' + 
+            image
+    }
+
+    //make pin bigger when active
+    clickedMarker.style.height = "46px";
+    clickedMarker.style.width = "30px";
+
 }
 
 </script>

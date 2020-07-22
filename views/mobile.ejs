@@ -3,12 +3,14 @@
 <!--bij mobiele versie geen modal wat er is één pagina voor catcall en home?-->
 <!--idee: voor dat je op de kaart hebt gelikt/gepanned een overlay over de kaart half transparant. addeventlistener voor aanraking buiten de overlay?-->
 
-<div class="container mt-2 d-flex justify-content-center">
+<div class="container pagesOtherThanMap mt-2 d-flex justify-content-center">
     <a href="/new"><button type="button" class="btn btn-white"><i class="fas fa-plus-square"></i> Meld anoniem een nieuwe catcall</button></a>
 </div>
 <div class="container containerMobileMap mt-2" id="containerMobileMap">
     <div id='map' class='map'>Map</div>
 </div>
+
+<div id="foldOutDiv" class="container foldOutMobileCatcall text-center p-2"></div>
 
 <div class='sidebarMobile p-4'>
     <div><h4>Zie alle catcalls --> </h2></div>
@@ -32,5 +34,9 @@
 
 
 <%- include("partials/map") %>
+
+<script>
+
+</script>
  
 <%- include("partials/footer") %>
