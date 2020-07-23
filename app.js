@@ -4,6 +4,8 @@ const express    = require("express"),
       mongoose   = require("mongoose"),
       multer     = require("multer"),
       methodOverride = require("method-override"),
+    //   passport       = require("passport"),
+    //   LocalStrategy  = require("passport-local"),
       flash      = require("connect-flash");
 
 const catcallRoutes = require("./routes/catcall");

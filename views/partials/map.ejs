@@ -203,8 +203,11 @@ map.on('click', function (e) {
     var foldOuts = document.getElementsByClassName('foldOut');
     if (popUps[0]) popUps[0].remove();
     if (foldOuts[0]) foldOuts[0].remove();
-    clickedMarker.style.height = "34px";
-    clickedMarker.style.width = "20px";
+    var allMarkers = document.querySelectorAll('.mapboxgl-marker');
+    allMarkers.forEach(function(marker) {
+        marker.style.height = "34px";
+        marker.style.width = "20px";
+    });
     if(location.pathname=="/mobile"){
         const foldOutDiv = document.getElementById('foldOutDiv');
         foldOutDiv.innerHTML = "";
@@ -235,8 +238,20 @@ function createPopUpImage(catcall){
     }
 }
 
+function highlightPin(catcallId){
+    //reset all markers to normal size
+    var allMarkers = document.querySelectorAll('.mapboxgl-marker');
+    allMarkers.forEach(function(marker) {
+        marker.style.height = "34px";
+        marker.style.width = "20px";
+    });
+    //get clicked marker to make bigger
+    var activeMarker = document.getElementById('marker-' + catcallId);
+    activeMarker.style.height = "46px";
+    activeMarker.style.width = "30px";
+}
+
 function createPopUp(currentFeature) {
-    console.log(this);
     const prop = currentFeature.properties;
 
     //edit standard date-format into dutch version or display 'without date'
@@ -292,10 +307,7 @@ function createPopUp(currentFeature) {
             image
     }
 
-    //make pin bigger when active
-    clickedMarker.style.height = "46px";
-    clickedMarker.style.width = "30px";
-
+    highlightPin(prop.id);
 }
 
 </script>

@@ -25,7 +25,7 @@
             <div class="container containerFormMap">
                 <div id="inputMap"></div>
             </div>
-            <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen</small>
+            <small id="mapHelp" class="form-text text-muted">Klik op de kaart om coordinaten toe te voegen.</small>
             <input type="text" class="inputCoordinates form-control" id="long" name="long" value="" placeholder="long">
             <input type="text" class="inputCoordinates form-control" id="lat" name="lat" value="" aria-describedby="mapHelp" placeholder="lat">
         </div>
@@ -55,20 +55,18 @@
         today = yyyy+'-'+mm+'-'+dd;
         document.getElementById("datefield").setAttribute("max", today);
 
-        ///////////////optioneel, een preview toevoegen:
-        // catcall.oninput = function() {
-        //     result.innerHTML = '"' + input.value + '"';
-        // };
-
         function validateForm() {
             //make sure someone adds a description and it does not include characters that we do not want
             const description = document.forms["addCatcall"]["description"].value;
             if (description == "") {
-                alert("Vul de catcall in"); //deze later vervangen door een flash
+                alert("Vul de catcall in");
                 return false;
             }
-            //make sure someone adds a date?
-            //make sure someone adds a coordinate?
+            const coordinateslong = document.forms["addCatcall"]["long"].value;
+            if (coordinateslong == "") {
+                alert("Geef een locatie op");
+                return false;
+            }
         }
 
         mapboxgl.accessToken = 'pk.eyJ1IjoibGlzYW4ta3JhYWwiLCJhIjoiY2s1Mm9uaXN4MDBiczNubHM2ZXc3MWIwaSJ9.6zWdzChRs2uXgoUUWJZZPw';

@@ -38,13 +38,20 @@ const upload = multer({
 //ROUTES
 
 //INDEX ("/" and "/catcalls")
-router.get("/", middleware.checkForMobile, function(req, res){
+router.get("/", function(req, res){
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
             const catcallsData = JSON.stringify(allCatcalls);
-            res.render("home", {catcalls: catcallsData});
+            var isMobile = middleware.isCallerMobile(req);
+            if(isMobile) {
+                req.flash('success', 'Hier wordt straatintimidatie visueel. Check de ingezonden catcalls of doe zelf een melding.');
+                req.flash('error', 'Disclaimer: bevat heftig, haatdragend, discriminerend en sexueel overschrijdend taalgebruik. Jonger van 18? Overleg dan in ieder geval met jouw voogd.')
+                res.redirect('/mobile');
+            } else {
+                res.render("home", {catcalls: catcallsData});
+            }
         }
     });
 });
@@ -108,8 +115,14 @@ router.post("/", function(req, res){
         if(err){
             console.log(err);
         } else {
-            req.flash("success", "Bedankt voor het melden. Een moderator zal jouw catcall checken en toevoegen op de kaart.");
-            res.redirect("/catcalls");
+            var isMobile = middleware.isCallerMobile(req);
+            if(isMobile) {
+                req.flash("success", "Bedankt voor het melden. Een moderator zal jouw catcall checken en toevoegen op de kaart.");
+                res.redirect('/mobile');
+            } else {
+                req.flash("success", "Bedankt voor het melden. Een moderator zal jouw catcall checken en toevoegen op de kaart.");
+                res.redirect("/catcalls");
+            }
         }
     });
 });
@@ -166,8 +179,14 @@ router.patch("/verify/:id", function(req, res){
                 req.flash("error", "Iets ging mis en het verifiëren is niet gelukt");
                 res.redirect("/moderatorlist")
             } else {
-                req.flash("success", "De catcall is geverifieerd en toegevoegd op de kaart");
-                res.redirect("/catcalls");
+                var isMobile = middleware.isCallerMobile(req);
+                if(isMobile) {
+                    req.flash("success", "De catcall is geverifieerd en toegevoegd op de kaart");
+                    res.redirect('/mobile');
+                } else {
+                    req.flash("success", "De catcall is geverifieerd en toegevoegd op de kaart");
+                    res.redirect("/catcalls");
+                }
             }
         }
     );
@@ -187,8 +206,14 @@ router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
                 req.flash("error", "Daar ging iets mis. De foto kan niet worden toegevoegd.");
                 res.redirect("/addimage/" + req.params.id);
             } else {
-                req.flash("success", "De foto is toegevoegd aan de catcall");
-                res.redirect("/catcalls");
+                var isMobile = middleware.isCallerMobile(req);
+                if(isMobile) {
+                    req.flash("success", "De foto is toegevoegd aan de catcall");
+                    res.redirect('/mobile');
+                } else {
+                    req.flash("success", "De foto is toegevoegd aan de catcall");
+                    res.redirect("/catcalls");
+                }
             }
         }
     );
