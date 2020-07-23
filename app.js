@@ -4,11 +4,26 @@ const express    = require("express"),
       mongoose   = require("mongoose"),
       multer     = require("multer"),
       methodOverride = require("method-override"),
-    //   passport       = require("passport"),
-    //   LocalStrategy  = require("passport-local"),
+      passport       = require("passport"),
+      LocalStrategy  = require("passport-local"),
       flash      = require("connect-flash");
 
+//ROUTES
 const catcallRoutes = require("./routes/catcall");
+const indexRoutes = require("./routes/index");
+
+//MODELS
+const User = require("./models/user");
+
+//CREATE USER manually
+// User.register(new User({username: "Ambrien"}), "1947253747", function(err, user){
+//     if(err){
+//         console.log(err);
+//     }
+//     passport.authenticate("local")(function(){
+//         console.log("user added");
+//     });
+// });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/uploads', express.static('uploads'));
@@ -37,6 +52,13 @@ app.use(function(req, res, next){
     next();
 });
 
+//setup user authentication through password
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 //ROUTES=====================================================================================
 //1. for catcalls => all in routes/catcall.js
 //INDEX     /               GET
@@ -52,8 +74,10 @@ app.use(function(req, res, next){
 //DESTROY   /:id            DELETE
 //
 //2. for users
+//
 
 app.use(catcallRoutes);
+app.use(indexRoutes);
 
 app.listen(process.env.PORT || 3000, function() {
     console.log("Server started");

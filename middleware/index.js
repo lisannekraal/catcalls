@@ -4,7 +4,6 @@
 
 const middlewareObj = {};
 
-
 //CHECK FOR SCREEN TYPE
 
 // returns true if the caller is a mobile phone (not tablet)
@@ -29,5 +28,21 @@ middlewareObj.checkForMobile = function(req, res, next) {
       return next();
     }
 }
+
+//CHECK IF LOGGED IN
+
+middlewareObj.isLoggedIn = function(req, res, next){
+  if(req.isAuthenticated()){
+      return next();
+  }
+  var isMobile = middlewareObj.isCallerMobile(req);
+  if (isMobile) {
+    req.flash("error", "Log in om deze pagina te zien")
+    res.redirect('/mobile');
+  } else {
+    req.flash("error", "Log in om deze pagina te zien")
+    res.redirect("/catcalls");
+  }
+};
 
 module.exports = middlewareObj;

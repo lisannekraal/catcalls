@@ -35,19 +35,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">/over ons</a>
+                <a class="nav-link" href="/over">/over ons</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/catcalls">/kaart<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">/join us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/moderatorlist">/moderator</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://www.instagram.com/catcallsofams/" target="_blank"><i class="fab fa-instagram"></i> insta</a>
             </li>
 
             <% if(!currentUser){ %>
@@ -72,19 +66,22 @@
                 </div>
               </li>
             <% } else {%>
-            <li class="nav-item">
-                <a class="nav-link" href="#">/pipeline</a>
-            </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  /ingelogd als <%=currentUser.username%> </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item">
-                    <a href="/logout"><button class="btn">Uitloggen</button></a>
-                  </a>
-                </div>
+              <li class="nav-item">
+                <a class="nav-link" href="/moderatorlist">/moderator</a>
               </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    /ingelogd als <%=currentUser.username%> </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item">
+                      <a href="/logout"><button class="btn">Uitloggen</button></a>
+                    </a>
+                  </div>
+                </li>
             <% } %>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.instagram.com/catcallsofams/" target="_blank"><i class="fab fa-instagram"></i> insta</a>
+            </li>
           </ul>
         </div>
     </nav>

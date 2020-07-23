@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router({mergeParams: true});
 const Catcall = require("../models/catcall");
+const User = require("../models/user");
 const multer = require("multer");
 const middleware = require("../middleware");
 
@@ -39,6 +40,7 @@ const upload = multer({
 
 //INDEX ("/" and "/catcalls")
 router.get("/", function(req, res){
+    const user = req.user;
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
@@ -50,37 +52,40 @@ router.get("/", function(req, res){
                 req.flash('error', 'Disclaimer: bevat heftig, haatdragend, discriminerend en sexueel overschrijdend taalgebruik. Jonger van 18? Overleg dan in ieder geval met jouw voogd.')
                 res.redirect('/mobile');
             } else {
-                res.render("home", {catcalls: catcallsData});
+                res.render("home", {catcalls: catcallsData, currentUser: user});
             }
         }
     });
 });
 
 router.get("/catcalls", middleware.checkForMobile, function(req, res){
+    const user = req.user;
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
             const catcallsData = JSON.stringify(allCatcalls);
-            res.render("catcalls", {catcalls: catcallsData});
+            res.render("catcalls", {catcalls: catcallsData, currentUser: user});
         }
     });
 });
 
 router.get("/mobile", function(req, res){
+    const user = req.user;
     Catcall.find({"properties.verified": true}, function(err, allCatcalls){
         if(err){
             console.log(err);
         } else {
             const catcallsData = JSON.stringify(allCatcalls);
-            res.render("mobile", {catcalls: catcallsData});
+            res.render("mobile", {catcalls: catcallsData, currentUser: user});
         }
     });
 });
 
 //NEW
 router.get("/new", function(req, res){
-    res.render("new");
+    const user = req.user;
+    res.render("new", {currentUser: user});
 });
 
 //CREATE
@@ -128,26 +133,29 @@ router.post("/", function(req, res){
 });
 
 //EDIT
-router.get("/:id/edit", function(req, res){
+router.get("/:id/edit", middleware.isLoggedIn, function(req, res){
+    const user = req.user;
     //this is where the edit form goes that moderators can use to work on the text
     Catcall.findById(req.params.id, function(err, foundCatcall){
-        res.render("edit", {catcall: foundCatcall});
+        res.render("edit", {catcall: foundCatcall, currentUser: user});
     })
 });
 
 //EDIT route for images
-router.get("/:id/editimage", function(req, res){
+router.get("/:id/editimage", middleware.isLoggedIn, function(req, res){
+    const user = req.user;
     Catcall.findById(req.params.id, function(err, foundCatcall){
         if(err){
             console.log(err);
         } else {
-            res.render("editimage", {catcall: foundCatcall});
+            res.render("editimage", {catcall: foundCatcall, currentUser: user});
         }
     });
 });
 
 //EDIT also takes place
-router.get("/moderatorlist", function(req, res){
+router.get("/moderatorlist", middleware.isLoggedIn, function(req, res){
+    const user = req.user;
     Catcall.find({}, function(err, allCatcalls){
         if(err){
             console.log(err);
@@ -161,13 +169,13 @@ router.get("/moderatorlist", function(req, res){
                 }
             });
             const notverifiedData = JSON.stringify(catcallsNotVerified);
-            res.render("moderatorlist", {notverifiedData: notverifiedData});
+            res.render("moderatorlist", {notverifiedData: notverifiedData, currentUser: user});
         }
     });
 });
 
 //UPDATE for verification
-router.patch("/verify/:id", function(req, res){
+router.patch("/verify/:id", middleware.isLoggedIn, function(req, res){
     //use $set to only update this one and not the whole properties object
     Catcall.findByIdAndUpdate(
         req.params.id, 
@@ -193,7 +201,7 @@ router.patch("/verify/:id", function(req, res){
 });
 
 //UPDATE for adding image using multer
-router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
+router.patch("/addimage/:id", middleware.isLoggedIn, upload.single('catcallImage'), function(req, res){
     //encode image link as well as it helps with parsing data while loading map
     const encodedImageLink = encodeURI(req.file.path).replace(/'/g,"%27");
     Catcall.findByIdAndUpdate(
@@ -220,7 +228,7 @@ router.patch("/addimage/:id", upload.single('catcallImage'), function(req, res){
 });
 
 //UPDATE for edit form by moderator
-router.put("/:id", function(req, res){
+router.put("/:id", middleware.isLoggedIn, function(req, res){
     const newDescription = encodeURI(req.body.description).replace(/'/g,"%27");
     const newContext = encodeURI(req.body.context).replace(/'/g,"%27");
     Catcall.findByIdAndUpdate(
@@ -241,7 +249,7 @@ router.put("/:id", function(req, res){
 });
 
 //DESTROY
-router.delete("/:id", function(req, res){
+router.delete("/:id", middleware.isLoggedIn, function(req, res){
     Catcall.findById(req.params.id, function(err, foundCatcall){
         if(err){
             console.log(err);
@@ -259,8 +267,6 @@ router.delete("/:id", function(req, res){
         }
     });
 });
-
-//MIDDLEWARE
 
 
 module.exports = router;
