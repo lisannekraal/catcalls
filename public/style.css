@@ -172,7 +172,7 @@ visibility: hidden;
 
 /* Marker tweaks */
 .mapboxgl-popup-close-button {
-    display: none;
+    /* display: none; */
 }
 
 .mapboxgl-popup-content {
@@ -207,6 +207,7 @@ visibility: hidden;
 
 .mapboxgl-popup-content p {
     padding: 10px;
+    font-size: 16px;
 }
 
 .mapboxgl-popup {

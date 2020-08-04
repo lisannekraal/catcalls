@@ -228,13 +228,13 @@ function createPopUpImage(catcall){
     if(catcall.properties.img === "no image"){
         image = "";
         if(currentUser){
-            addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-success">Voeg foto toe</a>';
-            addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-warning">Edit tekst</a>'
+            addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-success">Voeg foto toe <i class="far fa-file"></i> </a>';
+            addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-secondary">Edit tekst <i class="far fa-edit"></i> </a>'
         }
     }else{
         if(currentUser){
-            addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-warning">Verander foto</a>';
-            addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-warning">Edit tekst</a>'
+            addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-warning">Verander foto <i class="far fa-file"></i> </a>';
+            addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-secondary">Edit tekst <i class="far fa-edit"></i> </a>'
         } 
         
         const imageLink = decodeURI(catcall.properties.img);
