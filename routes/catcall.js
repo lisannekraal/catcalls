@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     },
     filename: function(req, file, cb){
         var randomNumber = Math.floor(Math.random()*100000000000);
-        cb(null, "catcall-"+ randomNumber);
+        cb(null, "catcall-"+ randomNumber + ".png");
     }
 });
 
