@@ -159,8 +159,8 @@ function addMarkers() {
 
 function adjustMap() {
     mapBorder.style.position = "absolute";
-    mapBorder.style.left = "25%";
-    mapBorder.style.width = "75%";
+    mapBorder.style.left = "30%"; //changed from 25
+    mapBorder.style.width = "70%"; //changed from 75
 }
 
 $(window).on('load',function(){
@@ -172,7 +172,7 @@ $(window).on('load',function(){
         mapBorder.style.height = "360px";
         mapBorder.style.top = "0px";
         buildCatcallList();
-        //overlay ding maken
+
     } else {
         $('#mapModal').modal('show');
         //built catcall list (only once) when user clicks on button
@@ -234,7 +234,8 @@ function createPopUpImage(catcall){
             addPictureLink = '<a href="/' + catcall._id + '/editimage" class="btn btn-sm mr-1 btn-warning">Verander foto</a>';
             addEditLink = '<a href="/' + catcall._id + '/edit" class="btn btn-sm btn-warning">Edit tekst</a>'
         const imageLink = decodeURI(catcall.properties.img);
-        image = '<a href="' + imageLink + '"><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
+        //create image and link to open in new window
+        image = '<a href="' + imageLink + '" target="_blank" ><img class="img-fluid embed-responsive-item popupImage" src="' + imageLink + '"></a>';
     }
 }
 

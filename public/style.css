@@ -1,19 +1,9 @@
-/*colors:
-#F6245A
-*/
-
 body {
     color: #404040;
     font-family: 'Source Sans Pro', sans-serif;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-}
-
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    /* -webkit-font-smoothing: antialiased; */
 }
 
 a {
@@ -43,24 +33,20 @@ a:hover {
 
 .sidebar {
     position: absolute;
-    width: 25%;
+    width: 30%; /*changed from 25*/
     height: 100%;
     top: 0;
     left: 0;
     overflow: hidden;
     border-right: 1px solid rgba(0, 0, 0, 0.25);
-    padding-top:50px;
+    padding-top: 50px;
     background-color: rgba(0, 0, 0, 0.02);
 }
 
 .sidebarMobile {
-    /* position: static; */
     display: block;
-    /* width: 100%; */
-    /* height: 40%; */
     overflow-x: scroll;
     white-space: nowrap; 
-    /* border: 1px solid rgba(0, 0, 0, 0.25); */
 }
 
 #containerMobileMap {
@@ -89,7 +75,7 @@ a:hover {
 }
 
 .listings {
-    height: 100%;
+    /* height: 100%; */
     overflow: auto;
     padding-bottom: 60px;
 }
@@ -125,12 +111,8 @@ a:hover {
     font-weight: 400;
 }
 
-/* .listings .item .title small { font-weight: 400; } */
-
 .listings .item.active .title,
-.listings .item .title:hover { 
-    /* background-color: #455ead; */
-    /* color: white;  */    
+.listings .item .title:hover {  
     font-weight: 700;
     text-decoration: none;
 }
@@ -160,8 +142,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar {
-width: 3px;
-height: 3px;
+width: 2px;
+height: 2px;
 border-left: 0;
 background: rgba(0, 0, 0, 0.1);
 }
@@ -201,12 +183,8 @@ visibility: hidden;
     overflow-wrap: break-word;
 }
 
-.foldOutMobileCatcall {
-    
-}
-
 .mapboxgl-popup-content-wrapper {
-    padding: 1%;
+    padding: 2%; /*changed from 1%*/
 }
 
 .mapboxgl-popup-content h5 {
@@ -248,7 +226,6 @@ cursor: pointer;
 }
 
 .marker {
-    /* border: none; */
     cursor: pointer;
     height: 34px;
     width: 20px;
@@ -270,7 +247,7 @@ cursor: pointer;
     width: 80%;
     left: 10%;
     top: 50px;
-    z-index: 999;
+    z-index: 10;
 }
 
 .navbar {

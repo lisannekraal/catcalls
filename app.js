@@ -16,7 +16,7 @@ const indexRoutes = require("./routes/index");
 const User = require("./models/user");
 
 //CREATE USER manually
-// User.register(new User({username: "Ambrien"}), "1947253747", function(err, user){
+// User.register(new User({username: "username"}), "password", function(err, user){
 //     if(err){
 //         console.log(err);
 //     }

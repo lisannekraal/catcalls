@@ -13,7 +13,8 @@ const storage = multer.diskStorage({
         cb(null, './uploads/');
     },
     filename: function(req, file, cb){
-        cb(null, file.originalname)
+        var randomNumber = Math.floor(Math.random()*100000000000);
+        cb(null, "catcall-"+ randomNumber);
     }
 });
 
