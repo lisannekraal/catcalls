@@ -59,10 +59,10 @@ function buildCatcallList(s) {
             const catcall = allCatcalls[random];
             var prop = catcall.properties;
 
-            //add new listings to sidebar
+            //add new listings to sidebar:
+            
+            //in the case of desktop
             if(location.pathname=="/catcalls" || location.pathname=="/"){
-
-                //in the case of desktop
                 var listings = document.getElementById('listings');
                 var listing = listings.appendChild(document.createElement('div'));
                 listing.className = 'item';
@@ -92,7 +92,7 @@ function buildCatcallList(s) {
 
             } else {
 
-                //in the case of mobile
+                //in the case of mobile:
                 var listings = document.getElementById('listingsMobile');
                 var listing = listings.appendChild(document.createElement('div'));
                 listing.className = "card mobileItem text-center justify-content-center";
@@ -105,11 +105,6 @@ function buildCatcallList(s) {
                 link.id = prop.id; //used to be link.id = "link-" + prop.id;
                 link.textContent = '"' + decodeURI(prop.description) + '"';
 
-                // if(prop.img === "no image"){
-                //     link.textContent = '"' + decodeURI(prop.description) + '"';
-                // } else {
-                //     link.innerHTML = '<img class="card-img-top" src="' + prop.img + '"></a>';
-                // }
                 link.addEventListener('click', function(e){
                     //we can replace this function later with folding out a mobile version
                     var clickedListing = geojson.features[this.id];
@@ -197,24 +192,39 @@ map.on('load', function (e) {
     addMarkers();
 });
 
-//removes popups+foldouts if you click on the map
-map.on('click', function (e) {
+//function to remove pop-ups/selections
+function resetSelection() {
+    //identify map popups, foldOuts and active items in list
     var popUps = document.getElementsByClassName('mapboxgl-popup');
     var foldOuts = document.getElementsByClassName('foldOut');
+    var activeListing = [];
+    if (document.getElementById("listings")){
+        activeListing = listings.getElementsByClassName('active');
+    }
+
+    //make sure these selection characteristics are removed
     if (popUps[0]) popUps[0].remove();
     if (foldOuts[0]) foldOuts[0].remove();
+    if (activeListing[0]) activeListing[0].classList.remove('active');
+
+    //reset markers to old styling
     var allMarkers = document.querySelectorAll('.mapboxgl-marker');
     allMarkers.forEach(function(marker) {
         marker.style.height = "34px";
         marker.style.width = "20px";
     });
+
+    //in the case of mobile, remove div
     if(location.pathname=="/mobile"){
         const foldOutDiv = document.getElementById('foldOutDiv');
         foldOutDiv.innerHTML = "";
         mapBorder.style.height = "360px";
         containerMap.style.height = "360px";
     }
-})
+}
+
+//fires the undo-function for foldouts, popups, selection when clicking on the map
+map.on('click', resetSelection);
 
 function flyToLocation(currentFeature) {
     map.flyTo({
@@ -294,6 +304,8 @@ function createPopUp(currentFeature) {
             dateDisplay + ' · ' + contextDescription.textContent + '</p>' + 
             image)
             .addTo(map);
+        popup.on('close', resetSelection);
+
     } else {
         //this happens if on mobile: fold out div
         mapBorder.style.height = "260px";
