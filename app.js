@@ -6,7 +6,8 @@ const express    = require("express"),
       methodOverride = require("method-override"),
       passport       = require("passport"),
       LocalStrategy  = require("passport-local"),
-      flash      = require("connect-flash");
+      flash      = require("connect-flash"),
+      request    = require("request");
 
 //ROUTES
 const catcallRoutes = require("./routes/catcall");
@@ -26,6 +27,7 @@ const User = require("./models/user");
 // });
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json()); //do this for the captcha part?
 app.use('/uploads', express.static('uploads'));
 app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");

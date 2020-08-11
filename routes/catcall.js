@@ -4,6 +4,7 @@ const Catcall = require("../models/catcall");
 const User = require("../models/user");
 const multer = require("multer");
 const middleware = require("../middleware");
+const request = require("request");
 
 ///MULTER
 
@@ -90,7 +91,36 @@ router.get("/new", function(req, res){
 });
 
 //CREATE
-router.post("/", function(req, res){
+router.post("/report", function(req, res, next){
+    //check to see if the captcha is wrong (empty, null, etc)
+    if(
+        req.body.captcha === undefined ||
+        req.body.captcha === '' ||
+        req.body.captcha === null
+    ){
+        return res.json({"success": false, "msg": "Gebruik de captcha asjeblieft (zie: 'ik ben geen robot' onderaan)"});
+    }
+
+    //define secret key
+    const secretKey = '6LdpsrsZAAAAAE-G-LNGcISO955vspbhujS4hldh';
+
+    //verify URL string for captcha api
+    const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${req.body.captcha}&remoteip=${req.connection.remoteAddress}`;
+
+    //make request (using request package) to verify url
+    request(verifyUrl, (err, response, body) =>{
+        // console.log(body);
+        body = JSON.parse(body);
+
+        //check if this body has a correct key
+        if(body.success !== undefined && !body.success){
+            //not a successfull captcha
+            // req.flash("error", "Captcha not correct"); 
+            // return res.redirect("/new"); 
+            return res.json({"success": false, "msg": "Captcha is helaas niet juist. Probeer het opnieuw."});
+        } 
+    });
+
     //retrieve information from form
     let dataFeature = req.body.date;
     if(!dataFeature){
@@ -106,8 +136,8 @@ router.post("/", function(req, res){
         geometry: {
             type: 'Point',
             coordinates: [
-                Number(req.body.long),
-                Number(req.body.lat)
+                req.body.long,
+                req.body.lat
             ]
         },
         properties: {
@@ -121,14 +151,8 @@ router.post("/", function(req, res){
         if(err){
             console.log(err);
         } else {
-            var isMobile = middleware.isCallerMobile(req);
-            if(isMobile) {
-                req.flash("success", "Bedankt voor het melden. Een moderator zal jouw catcall checken en toevoegen op de kaart.");
-                res.redirect('/mobile');
-            } else {
-                req.flash("success", "Bedankt voor het melden. Een moderator zal jouw catcall checken en toevoegen op de kaart.");
-                res.redirect("/catcalls");
-            }
+            req.flash("success", "Dankjewel voor het melden. Een moderator checkt de catcall en zet 'm op de kaart.");
+            return res.json({"success": true, "msg": ""});
         }
     });
 });

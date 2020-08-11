@@ -4,7 +4,8 @@
 
 <div class="container pagesOtherThanMap mb-4">
     <h2>Meld een catcall</h2>
-    <form name="addCatcall" onsubmit="return validateForm()" action="/" method="POST">
+    <!-- removed this from form header: action="/" method="POST"-->
+    <form name="addCatcall" id="form" onsubmit="return validateForm()">
         <div class="form-group mt-4">
             <!--input field for catcall, including regex to avoid using double quotes cause this will mess up the database + json flow-->
             <label for="catcall">Catcall quote*:</label>
@@ -34,7 +35,11 @@
             <label class="form-check-label ml-4" for="check">Ik verklaar dat ik deze melding naar waarheid heb ingevuld in overeenstemming met de <a href="#"><u>huisregels</u></a>. Tevens ben ik mij bewust van de <a href=""><u>privacyverklaring</u></a>*.</label>
         </div>
 
-        <!--add captcha-->
+        <div class="form-group">
+            <div name="captcha" class="g-recaptcha" data-sitekey="6LdpsrsZAAAAAFhf5g-9hBG7FnWvX7vIbJ7pwTy5"></div>
+        </div>
+
+
         <button type="submit" class="btn btn-dark">Verstuur</button>
       </form>
 </div>
@@ -51,18 +56,62 @@
             if(mm<10){
                 mm='0'+mm;
             } 
-
         today = yyyy+'-'+mm+'-'+dd;
         document.getElementById("datefield").setAttribute("max", today);
 
+        //are we still using this?
         const flashBoxError = document.getElementById("flashBox").querySelector(".alert-danger");
 
         function validateForm() {
+            //make sure there is a location pinned on the map
             const coordinateslong = document.forms["addCatcall"]["long"].value;
             if (coordinateslong == "") {
                 alert("Pin de locatie op de kaart");;
                 return false;
             }
+        }
+
+        //event listener for form submission so we can check CAPTCHA first
+        document.getElementById('form').addEventListener('submit', submitForm);
+
+        function submitForm(e){
+            //prevent the actual submission from happening
+            e.preventDefault();
+
+            //get all the values so we can actually do the post request here
+            const description = document.querySelector("#catcall").value;
+            const context = document.querySelector("#context").value;
+            const date = document.querySelector("#datefield").value;
+            const long = String(document.querySelector("#long").value);
+            const lat = String(document.querySelector("#lat").value);
+            const captcha = document.querySelector("#g-recaptcha-response").value;
+            
+            //fetch and make the post request
+            fetch("/report/", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    description: description,
+                    context: context,
+                    date: date,
+                    long: long,
+                    lat: lat,
+                    captcha: captcha
+                })
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if(data.msg){
+                    alert(data.msg);
+                }
+                if(data.success){
+                    //change to url when in production
+                    window.location.href = "https://catcallsofamsterdam.herokuapp.com/catcalls";
+                }
+            });
         }
 
         mapboxgl.accessToken = 'pk.eyJ1IjoibGlzYW4ta3JhYWwiLCJhIjoiY2s1Mm9uaXN4MDBiczNubHM2ZXc3MWIwaSJ9.6zWdzChRs2uXgoUUWJZZPw';
